@@ -1,5 +1,9 @@
 #!/usr/bin/perl -w
 #https://www.ibm.com/support/pages/node/283137
+
+#
+# Run this script and pri
+#
 use strict;
 use warnings;
 my %eyecatchers;
