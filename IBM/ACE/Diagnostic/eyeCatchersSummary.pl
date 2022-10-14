@@ -2,7 +2,8 @@
 #https://www.ibm.com/support/pages/node/283137
 
 #
-# Run this script and pri
+# This script takes the eyecatchers input file and parses it to make a list of how oftern
+# each eyecatcher occures
 #
 use strict;
 use warnings;
