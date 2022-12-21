@@ -13,8 +13,7 @@ function Unzip-ModRelease {
 
     $aceZip = $aceModDir + ".zip"
     $dir = [string](Get-Location)
-    $logLine = "Unzipping " + $aceZip + " to " + $dir + "\" + $aceModDir
-    Write-Host $logLine
+    Write-Host "Unzipping $aceZip to $dir\$aceModDir"
     Expand-Archive $aceZip -DestinationPath $aceModDir -Force
 }
 
@@ -31,8 +30,7 @@ function Install-ModRelease {
     $aceExe = "ACESetup" + $fixVersion + ".exe"
     $logFile = $logBasePath + "\Ace_intall_" + $fixVersion + ".log"
     $aceInstallCommand = $aceExe + " /install /quiet LICENSE_ACCEPTED=TRUE InstallFolder=`"" + $installDir + "`" /log " + $logFile
-    $logLine = "Going to run " + $aceInstallCommand
-    Write-Host $logLine
+    Write-Host "Going to run $aceInstallCommand"
     Write-Host "(this may take some time) ..."
     $output = (& cmd /c $aceInstallCommand)
     Write-Host $output
@@ -52,8 +50,10 @@ function Update-Mqsiprofile {
     param (
         $installDir
     )
+
     #TODO: check if already present
     $mqsiprofilePath = $installDir + "\server\bin\mqsiprofile.cmd"
+    Write-Host "Adding content to $mqsiprofilePath"
     Add-Content -Path $mqsiprofilePath -value "rem  Custom values  ["
     Add-Content -Path $mqsiprofilePath -value "set MQSI_FREE_MASTER_PARSERS=true"
     Add-Content -Path $mqsiprofilePath -value "rem ]"
@@ -65,12 +65,22 @@ function Install-UDN {
     )
 
     $pwd = [string](Get-Location)
-    $pluginDir = $installDir + "\tools\plugins"
-    Write-Host "Copying from $pwd\udn\toolkit\ to $pluginDir"
-    Copy-Item -Path .\udn\toolkit\* -Destination $pluginDir -PassThru -Force
-    $jpluginDir = $installDir + "\server\jplugin"
-    Write-Host "Copying from $pwd\udn\runtime\ to $jpluginDir"
-    Copy-Item -Path .\udn\runtime\* -Destination $jpluginDir -PassThru -Force
+
+    if (Test-Path -Path "$pwd\udn\toolkit\") {
+        $pluginDir = $installDir + "\tools\plugins"
+        Write-Host "Copying from $pwd\udn\toolkit\ to $pluginDir"
+        Copy-Item -Path $pwd\udn\toolkit\* -Destination $pluginDir -PassThru -Force
+    } else {
+        Write-Host "$pwd\udn\toolkit\ does not exists, skipping UDN toolkit copy ..."
+    }
+
+    if (Test-Path -Path "$pwd\udn\runtime\") {
+        $jpluginDir = $installDir + "\server\jplugin"
+        Write-Host "Copying from $pwd\udn\runtime\ to $jpluginDir"
+        Copy-Item -Path $pwd\udn\runtime\* -Destination $jpluginDir -PassThru -Force
+    } else {
+        Write-Host "$pwd\udn\runtime\ does not exists, skipping UDN runtime copy ..."
+    }
 
 }
 
@@ -78,11 +88,16 @@ function Install-SharedClasses {
     param(
         $runtimeBasePath
     )
-    $pwd = [string](Get-Location)
-    $sharedClassesDir = $runtimeBasePath + "\shared-classes"
 
-    Write-Host "Copying from $pwd\shared-classes\ to $sharedClassesDir"
-    Copy-Item -Path .\shared-classes\* -Destination $sharedClassesDir -PassThru -Force
+    $pwd = [string](Get-Location)
+
+    if (Test-Path -Path "$pwd\shared-classes") {
+        $sharedClassesDir = $runtimeBasePath + "\shared-classes"
+        Write-Host "Copying from $pwd\shared-classes\ to $sharedClassesDir"
+        Copy-Item -Path $pwd\shared-classes\* -Destination $sharedClassesDir -PassThru -Force
+    } else {
+        Write-Host "$pwd\shared-classes does not exists, skipping shared-classes copy ..."
+    }
 }
 
 function Install-JavaSecurity {
@@ -90,23 +105,36 @@ function Install-JavaSecurity {
         $installDir
     )
 
-    $javaSecurityPath = $installDir + "\common\jdk\jre\lib\security"
-    Write-Host "Copying from $pwd\security to $javaSecurityPath"
-    Copy-Item -Path .\security\java.security -Destination $javaSecurityPath -PassThru -Force
+    $pwd = [string](Get-Location)
+
+    if (Test-Path -Path "$pwd\security") {
+        $javaSecurityPath = $installDir + "\common\jdk\jre\lib\security"
+        Write-Host "Copying from $pwd\security to $javaSecurityPath"
+        Copy-Item -Path $pwd\security\java.security -Destination $javaSecurityPath -PassThru -Force
+    } else {
+        Write-Host "$pwd\security does not exists, skipping java-security copy ..."
+    }
 }
+
 
 #run from C:\Users\ADM-BLMM_M\modrelease
 $aceModDir = "12.0-ACE-WINX64-" + $fixVersion
 $installDir = $installBasePath + "\" + $fixVersion
 
-Unzip-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir
+#Unzip-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir
 
-Install-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir -installDir $installDir -logBasePath $logBasePath
+
+#Install-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir -installDir $installDir -logBasePath $logBasePath
+
+#TODO check if version install ok via mqsiservice -v
 
 Update-Mqsiprofile -installDir $installDir
+#TODO check if profile still usable
 
 Install-UDN -installDir $installDir
 
 Install-SharedClasses -runtimeBasePath $runtimeBasePath
 
 Install-JavaSecurity -installDir $installDir
+
+#TODO cleanup: zip, ...
