@@ -20,7 +20,7 @@ open (INPUT, "< $inputFile") or die $!;
 close INPUT;
 
 open(OUTPUT, "> $outputFile");
-	print OUTPUT $_." ".$eyecatchers{$_}."\n" foreach sort keys %eyecatchers;
+	print OUTPUT $_." ".$eyecatchers{$_}."\n" foreach (sort {$eyecatchers{$b} <=>$eyecatchers{$a}} keys %eyecatchers);
 close OUTPUT;
 
 __END__
