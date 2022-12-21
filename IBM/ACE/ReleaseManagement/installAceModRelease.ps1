@@ -121,10 +121,9 @@ function Install-JavaSecurity {
 $aceModDir = "12.0-ACE-WINX64-" + $fixVersion
 $installDir = $installBasePath + "\" + $fixVersion
 
-#Unzip-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir
+Unzip-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir
 
-
-#Install-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir -installDir $installDir -logBasePath $logBasePath
+Install-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir -installDir $installDir -logBasePath $logBasePath
 
 #TODO check if version install ok via mqsiservice -v
 
