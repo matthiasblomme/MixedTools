@@ -25,7 +25,16 @@ function Install-ModRelease {
         $logBasePath
     )
 
-    #TODO: check if already installed
+    if($LASTEXITCODE -eq 0)
+    {
+        Write-Host "$fixVersion already installed, skipping installation step."
+        return
+    }
+    else
+    {
+        Write-Host "Going to install $fixVersion"
+    }
+
     Set-Location $aceModDir
     $aceExe = "ACESetup$fixVersion.exe"
     $logFile = "$logBasePath\Ace_intall_$fixVersion.log"
@@ -44,20 +53,35 @@ function Install-ModRelease {
         exit 1;
     }
     Set-Location ../
+    Write-Host "Removing unzipped mod release"
+    Remove-Item -Path $aceModDir -Recurse -Force
 }
 
 function Update-Mqsiprofile {
     param (
-        $installDir
+        $installDir,
+        $mqsiprofileAddition
     )
 
     $mqsiprofilePath = "$installDir\server\bin\mqsiprofile.cmd"
     if (Test-Path -Path $mqsiprofilePath) {
-        #TODO: check if already present
-        Write-Host "Adding content to $mqsiprofilePath"
-        Add-Content -Path $mqsiprofilePath -value "rem  Custom values  ["
-        Add-Content -Path $mqsiprofilePath -value "set MQSI_FREE_MASTER_PARSERS=true"
-        Add-Content -Path $mqsiprofilePath -value "rem ]"
+        $fileContent = Get-Content $mqsiprofilePath -Raw
+        $found = $fileContent | Select-String 'MQSI_FREE_MASTER_PARSERS=true' -AllMatches | Foreach {$_.Matches} | Foreach {$_.Value}
+        if ($found -ne $null)
+        {
+            Write-Host "$mqsiprofileAddition already present, skipping"
+        }
+        else
+        {
+            Write-Host "Adding content to $mqsiprofilePath"
+            $mqsiprofileWrite = "
+
+rem  Custom profile addition  [
+$mqsiprofileAddition
+rem ]
+"
+            Add-Content -Path $mqsiprofilePath -value $mqsiprofileWrite
+        }
     } else {
         Write-Host "Can't locate $mqsiprofilePath, stopping script"
         exit 1
@@ -71,20 +95,33 @@ function Check-AceInstall {
         $installDir
     )
 
+    #check installed service
+    $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
+    $service = Get-Service -Name $serviceName
+    if($service.Length -gt 0)
+    {
+        Write-Host "$fixVersion appears to be properly installed, continuing ..."
+    }
+    else
+    {
+        Write-Host "Failed to verify $fixVersion installation, check the installation"
+        exit 1
+    }
+
+    #check mqsiprofile
     $pwd = [string](Get-Location)
     $checkScriptPath =  "$pwd\checkAceVersion.bat"
     Write-Host "Creating temporary file $checkScriptPath"
     New-Item -Path ./checkAceVersion.bat -Force
     Add-Content -Path $checkScriptPath -value "call `"C:\Program Files\ibm\ACE\$fixVersion\server\bin\mqsiprofile.cmd`""
-    Add-Content -Path $checkScriptPath -value "call `"C:\Program Files\ibm\ACE\$fixVersion\server\bin\mqsiservice.exe`" -v"
+    Add-Content -Path $checkScriptPath -value "call `"mqsiservice.exe`" -v"
     $output = & $checkScriptPath
     Remove-Item -Path $checkScriptPath
     $selection = $output | Select-String "Version:" | select-String "$fixVersion"
-    Write-Host $selection
     if ($selection -like "*$fixVersion*") {
-        Write-Host "$fixVersion appears to be properly installed, continuing ..."
+        Write-Host "$fixVersion mqsiprofile appears to be properly installed, continuing ..."
     } else {
-        Write-Host "Failed to verify $fixVersion installation, check installation and mqsiprofile.cmd"
+        Write-Host "Failed to verify $fixVersion installation, check mqsiprofile.cmd"
         exit 1
     }
 }
@@ -147,6 +184,7 @@ function Install-JavaSecurity {
 }
 
 
+
 #run from C:\Users\ADM-BLMM_M\modrelease
 $aceModDir = "12.0-ACE-WINX64-$fixVersion"
 $installDir = "$installBasePath\$fixVersion"
@@ -155,7 +193,8 @@ Unzip-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir
 
 Install-ModRelease -fixVersion $fixVersion -aceModDir $aceModDir -installDir $installDir -logBasePath $logBasePath
 
-Update-Mqsiprofile -installDir $installDir
+#Call this for each profile addition
+Update-Mqsiprofile -installDir $installDir -mqsiprofileAddition "set MQSI_FREE_MASTER_PARSERS=true"
 
 Check-AceInstall -fixVersion $fixVersion -installDir $installDir
 
@@ -164,5 +203,3 @@ Install-UDN -installDir $installDir
 Install-SharedClasses -runtimeBasePath $runtimeBasePath
 
 Install-JavaSecurity -installDir $installDir
-
-#TODO cleanup: zip, ...
