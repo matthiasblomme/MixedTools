@@ -113,10 +113,11 @@ function Check-AceInstall {
     $checkScriptPath =  "$pwd\checkAceVersion.bat"
     Write-Host "Creating temporary file $checkScriptPath"
     New-Item -Path ./checkAceVersion.bat -Force
-    Add-Content -Path $checkScriptPath -value "call `"C:\Program Files\ibm\ACE\$fixVersion\server\bin\mqsiprofile.cmd`""
+    Add-Content -Path $checkScriptPath -value "call `"$installDir\server\bin\mqsiprofile.cmd`""
     Add-Content -Path $checkScriptPath -value "call `"mqsiservice.exe`" -v"
+    dir $checkScriptPath
     $output = & $checkScriptPath
-    Remove-Item -Path $checkScriptPath
+    #Remove-Item -Path $checkScriptPath
     $selection = $output | Select-String "Version:" | select-String "$fixVersion"
     if ($selection -like "*$fixVersion*") {
         Write-Host "$fixVersion mqsiprofile appears to be properly installed, continuing ..."
