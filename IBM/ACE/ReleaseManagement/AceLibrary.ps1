@@ -4,7 +4,7 @@
     Library with functions related to ACE installation and management
 
 .DESCRIPTION
-    AceLibray contains functions to handle and interface with ACE. There are functions that can be used manage ACE
+    AceLibray contains functions to handle and interface with ACE. There are functions that can be used to manage ACE
         1. Start a node
         2. Stop a node
 
@@ -29,11 +29,11 @@
     Purpose/Change: Initial script development
 #>
 
-#----------------------------------------------------------[Declarations]----------------------------------------------------------
+#------------------------------------------------[Declarations]------------------------------------------------
 #Library Version
 $LibraryVersion = "1.0"
 
-#-----------------------------------------------------------[Functions]------------------------------------------------------------
+#-------------------------------------------------[Functions]--------------------------------------------------
 function Write-Log {
     <#
     .SYNOPSIS
@@ -53,15 +53,22 @@ function Write-Log {
         Purpose/Change: Initial script development
 
     .EXAMPLE
-        Update-Script -scriptPath "C:\temp\backup.cmd" -fixVersion 12.0.7.0 -oldVersion 12.0.6.0
+        Write-Log "Begin run ..."
     #>
 
     param (
         [Parameter(Mandatory=$True, Position=0)][String]$entry
     )
+    Begin{}
 
-    Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff') $entry"
+    Process{
+        Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff') $entry"
+    }
+
+    End{}
+
 }
+
 function Update-Script {
     <#
     .SYNOPSIS
@@ -87,13 +94,14 @@ function Update-Script {
         Purpose/Change: Initial script development
 
     .EXAMPLE
-        Write-Log "Begin run ..."
+        Update-Script -scriptPath "C:\temp\backup.cmd" -fixVersion 12.0.7.0 -oldVersion 12.0.6.0
+
     #>
 
     param (
-        $scriptPath,
-        $fixVersion,
-        $oldVersion
+        [Parameter(Mandatory=$True)][String]$scriptPath,
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$oldVersion
     )
 
     Begin{
@@ -129,8 +137,8 @@ function Update-Script {
 
 function Update-EventViewer {
     param(
-        $fixVersion,
-        $viewName
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$viewName
     )
 
     #replace source in event viewer custom view
@@ -163,8 +171,8 @@ function Update-ODBC {
     #>
 
     param(
-        $fixVersion,
-        $driverName
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$driverName
     )
 
     Begin{
@@ -203,7 +211,7 @@ function Start-Ace{
         The version of the latest mod release that has been installed before running this script
 
     .PARAMETER installBasePath
-        The base installation path where ACE is running, the default windows installation path is C:\Program Files\IBM\ACE\
+        The path to the ACE runtimes (without the version), the default windows installation path is C:\Program Files\IBM\ACE\
 
     .PARAMETER nodeName
         The name of the integration node to start
@@ -219,9 +227,9 @@ function Start-Ace{
     #>
 
     param(
-        $fixVersion,
-        $installBasePath,
-        $nodeName
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$installBasePath,
+        [Parameter(Mandatory=$True)][String]$nodeName
     )
 
     Begin{
@@ -272,13 +280,13 @@ function Stop-Ace {
         Stop a node from the old (current) release version
 
     .DESCRIPTION
-        Stopt-Ace is a function that stops the specified node from the original environment
+        Stop-Ace is a function that stops the specified node from the original environment
 
     .PARAMETER oldVersion
         The version of the current mod release where the node is running on
 
     .PARAMETER installBasePath
-        The base installation path where ACE is running, the default windows installation path is C:\Program Files\IBM\ACE\
+        The path to the ACE runtimes (without the version), the default windows installation path is C:\Program Files\IBM\ACE\
 
     .PARAMETER nodeName
         The name of the integration node to stop
@@ -294,13 +302,13 @@ function Stop-Ace {
     #>
 
     param(
-        $oldVersion,
-        $installBasePath,
-        $nodeName
+        [Parameter(Mandatory=$True)][String]$oldVersion,
+        [Parameter(Mandatory=$True)][String]$installBasePath,
+        [Parameter(Mandatory=$True)][String]$nodeName
     )
 
     Begin{
-        Write-Log "Begin start $nodeName ..."
+        Write-Log "Begin stop $nodeName ..."
         $installDir = "$installBasePath\$oldVersion"
         $pwd = [string](Get-Location)
         $checkScriptPath =  "$pwd\stopAce.bat"
@@ -342,179 +350,482 @@ function Stop-Ace {
 }
 
 function Unzip-ModRelease {
+    <#
+    .SYNOPSIS
+        Unzip a mod release deliverable to a local directory
+
+    .DESCRIPTION
+        Unzip-Modrelease is a function that extracts the contents of a mod release deliverable zip to a local directory
+
+    .PARAMETER fixVersion
+        The version of the mod release to install
+
+    .PARAMETER aceModDir
+        The name of the directoy to unzip the mod release to
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Unzip-ModRelease -fixVersion 12.0.7.0 -aceModDir 12.0-ACE-WINX64-12.0.7.0
+    #>
     param (
-        $fixVersion,
-        $aceModDir
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$aceModDir
     )
 
-    $aceZip = "$aceModDir.zip"
-    $dir = [string](Get-Location)
-    Write-Host "Unzipping $aceZip to $dir\$aceModDir"
-    Expand-Archive $aceZip -DestinationPath $aceModDir -Force
+    Begin{
+        $aceZip = "$aceModDir.zip"
+        $dir = [string](Get-Location)
+        Write-Log "Begin unzip $aceZip to $dir\$aceModDir ..."
+    }
+
+    Process{
+        Try{
+            Expand-Archive $aceZip -DestinationPath $aceModDir -Force
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured unzip $aceZip to $dir\$aceModDir"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Unzip $aceZip to $dir\$aceModDir succesfull."
+        } else {
+            Write-Log "Unzip $aceZip to $dir\$aceModDir failed."
+        }
+    }
 }
 
 function Install-ModRelease {
+    <#
+    .SYNOPSIS
+        Install an ACE mod release
+
+    .DESCRIPTION
+        Install-ModRelease installs an ACE mod release onto the system
+
+    .PARAMETER fixVersion
+        The version of the mod release to install
+
+    .PARAMETER aceModDir
+        The name of the directoy to install from
+
+    .PARAMETER installDir
+        The directory to install the binaries to, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .PARAMETER logBasePath
+        The directory to write the installation log to (in the file Ace_intall_$fixVersion.log)
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Install-ModRelease -fixVersion 12.0.7.0 -aceModDir 12.0-ACE-WINX64-12.0.7.0 -installDir "C:\Program Files\IBM\ACE\12.0.7.0" -logBasePath "c:\temp\"
+    #>
     param (
-        $fixVersion,
-        $aceModDir,
-        $installDir,
-        $logBasePath
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$aceModDir,
+        [Parameter(Mandatory=$True)][String]$installDir,
+        [Parameter(Mandatory=$True)][String]$logBasePath
     )
 
-    if($LASTEXITCODE -eq 0)
-    {
-        Write-Host "$fixVersion already installed, skipping installation step."
-        return
-    }
-    else
-    {
-        Write-Host "Going to install $fixVersion"
+    Begin{
+        $aceExe = "ACESetup$fixVersion.exe"
+        $logFile = "$logBasePath\Ace_intall_$fixVersion.log"
+        $aceInstallCommand = $aceExe + " /install /quiet LICENSE_ACCEPTED=TRUE InstallFolder=`"" + $installDir + "`" /log " + $logFile
+        Write-Log "Begin install of $fixVersion ..."
+        Write-Log "(this may take some time) ..."
     }
 
-    Set-Location $aceModDir
-    $aceExe = "ACESetup$fixVersion.exe"
-    $logFile = "$logBasePath\Ace_intall_$fixVersion.log"
-    $aceInstallCommand = $aceExe + " /install /quiet LICENSE_ACCEPTED=TRUE InstallFolder=`"" + $installDir + "`" /log " + $logFile
-    Write-Host "Going to run $aceInstallCommand"
-    Write-Host "(this may take some time) ..."
-    $output = (& cmd /c $aceInstallCommand)
-    Write-Host $output
-    if($LASTEXITCODE -eq 0)
-    {
-        Write-Host "The installation succeeded, continuing ..."
+    Process{
+        Try{
+            $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
+            $service = Get-Service -Name $serviceName
+            if($service.Length -gt 0)
+            {
+                Write-Log "Service $serviceName already exists, skipping re-installation."
+                break;
+            }
+
+            Set-Location $aceModDir
+            Write-Log "Going to run $aceInstallCommand"
+            $output = (& cmd /c $aceInstallCommand)
+            Write-Log $output
+            if($LASTEXITCODE -eq 0)
+            {
+                Write-Log "The installation succeeded, continuing ..."
+            }
+            else
+            {
+                Write-Log "The installation failed, please check $logFile"
+                exit 1;
+            }
+            Set-Location ../
+            Write-Log "Removing unzipped mod release"
+            Remove-Item -Path $aceModDir -Recurse -Force
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured installing $fixVersion"
+            Break
+        }
     }
-    else
-    {
-        Write-Host "The installation failed, please check $logFile"
-        exit 1;
+
+    End{
+        If($?){
+            Write-Log "Installation of $fixVersion succesfull."
+        } else {
+            Write-Log "Installation of $fixVersion failed."
+            exit 1
+        }
     }
-    Set-Location ../
-    Write-Host "Removing unzipped mod release"
-    Remove-Item -Path $aceModDir -Recurse -Force
 }
 
 function Update-Mqsiprofile {
+    <#
+    .SYNOPSIS
+        Update the mqsiprofile file with custom environment variables
+
+    .DESCRIPTION
+        Update-Mqsiprofile is a function that appends custom code to the mqsirprofile.cmd file of the ACE installation
+
+    .PARAMETER installDir
+        The directory where the binaries are installed, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .PARAMETER mqsiprofileAddition
+        The custom code (usually environmentvariables) to append to the mqsiprofile.cmd file
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Update-Mqsiprofile -installDir "C:\Program Files\IBM\ACE\12.0.7.0" -mqsiprofileAddition "set MQSI_FREE_MASTER_PARSERS=true"
+    #>
     param (
-        $installDir,
-        $mqsiprofileAddition
+        [Parameter(Mandatory=$True)][String]$installDir,
+        [Parameter(Mandatory=$True)][String]$mqsiprofileAddition
     )
 
-    $mqsiprofilePath = "$installDir\server\bin\mqsiprofile.cmd"
-    if (Test-Path -Path $mqsiprofilePath) {
-        $fileContent = Get-Content $mqsiprofilePath -Raw
-        $found = $fileContent | Select-String 'MQSI_FREE_MASTER_PARSERS=true' -AllMatches | Foreach {$_.Matches} | Foreach {$_.Value}
-        if ($found -ne $null)
-        {
-            Write-Host "$mqsiprofileAddition already present, skipping"
-        }
-        else
-        {
-            Write-Host "Adding content to $mqsiprofilePath"
-            $mqsiprofileWrite = "
+    Begin{
+        $mqsiprofilePath = "$installDir\server\bin\mqsiprofile.cmd"
+        Write-Log "Begin update $mqsiprofilePath ..."
+    }
+
+    Process{
+        Try{
+            if (Test-Path -Path $mqsiprofilePath) {
+                $fileContent = Get-Content $mqsiprofilePath -Raw
+                $found = $fileContent | Select-String 'MQSI_FREE_MASTER_PARSERS=true' -AllMatches | Foreach {$_.Matches} | Foreach {$_.Value}
+                if ($found -ne $null)
+                {
+                    Write-Log "$mqsiprofileAddition already present, skipping"
+                }
+                else
+                {
+                    Write-Log "Adding content to $mqsiprofilePath"
+                    $mqsiprofileWrite = "
 
 rem  Custom profile addition  [
 $mqsiprofileAddition
 rem ]
 "
-            Add-Content -Path $mqsiprofilePath -value $mqsiprofileWrite
+                    Add-Content -Path $mqsiprofilePath -value $mqsiprofileWrite
+                }
+            } else {
+                Write-Log "Can't locate $mqsiprofilePath, skipping"
+                break
+            }
         }
-    } else {
-        Write-Host "Can't locate $mqsiprofilePath, stopping script"
-        exit 1
+
+        Catch
+        {
+            Write-Log "An exception occured updating $mqsiprofilePath"
+            Break
+        }
     }
 
+    End{
+        If($?){
+            Write-Log "Update $mqsiprofilePath succesfull."
+        } else {
+            Write-Log "Update $mqsiprofilePath failed."
+        }
+    }
 }
 
 function Check-AceInstall {
+    <#
+    .SYNOPSIS
+        Check if ACE is properly installed
+
+    .DESCRIPTION
+        Check-AceInstall is a function that verifies if ACE is properly installed by checking the service is running
+        and by verifying that the command environment works
+
+    .PARAMETER fixVersion
+        The version of ACE to verify
+
+    .PARAMETER installDir
+       The directory where the binaries are installed, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Stop-Ace -fixVersion 12.0.5.0 -installBasePath "C:\Program Files\IBM\ACE\" -nodeName TestNode
+    #>
     param(
-        $fixVersion,
-        $installDir
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$installDir
     )
 
-    #check installed service
-    $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
-    $service = Get-Service -Name $serviceName
-    if($service.Length -gt 0)
-    {
-        Write-Host "$fixVersion appears to be properly installed, continuing ..."
-    }
-    else
-    {
-        Write-Host "Failed to verify $fixVersion installation, check the installation"
-        exit 1
+    Begin{
+        Write-Log "Begin installation check ..."
     }
 
-    #check mqsiprofile
-    $pwd = [string](Get-Location)
-    $checkScriptPath =  "$pwd\checkAceVersion.bat"
-    Write-Host "Creating temporary file $checkScriptPath"
-    New-Item -Path ./checkAceVersion.bat -Force
-    Add-Content -Path $checkScriptPath -value "call `"$installDir\server\bin\mqsiprofile.cmd`""
-    Add-Content -Path $checkScriptPath -value "call `"mqsiservice.exe`" -v"
-    $output = & $checkScriptPath
-    Remove-Item -Path $checkScriptPath
-    $selection = $output | Select-String "Version:" | select-String "$fixVersion"
-    if ($selection -like "*$fixVersion*") {
-        Write-Host "$fixVersion mqsiprofile appears to be properly installed, continuing ..."
-    } else {
-        Write-Host "Failed to verify $fixVersion installation, check mqsiprofile.cmd"
-        exit 1
+    Process{
+        Try{
+            $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
+            $service = Get-Service -Name $serviceName
+            if($service.Length -gt 0)
+            {
+                Write-Log "$fixVersion appears to be properly installed, continuing ..."
+            }
+            else
+            {
+                Write-Log "Failed to verify $fixVersion installation (service $serviceName not found), check the installation"
+                exit 1
+            }
+
+            #check mqsiprofile
+            $pwd = [string](Get-Location)
+            $checkScriptPath =  "$pwd\checkAceVersion.bat"
+            Write-Log "Creating temporary file $checkScriptPath"
+            $null = New-Item -Path ./checkAceVersion.bat -Force
+            Add-Content -Path $checkScriptPath -value "call `"$installDir\server\bin\mqsiprofile.cmd`""
+            Add-Content -Path $checkScriptPath -value "call `"mqsiservice.exe`" -v"
+            $output = & $checkScriptPath
+            Remove-Item -Path $checkScriptPath
+            $selection = $output | Select-String "Version:" | select-String "$fixVersion"
+            if ($selection -like "*$fixVersion*") {
+                Write-Log "$fixVersion appears to be properly installed, continuing ..."
+            } else {
+                Write-Log "Failed to verify $fixVersion installation, please verify"
+                exit 1
+            }
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured verifying $fixVersion installation"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Verify $fixVersion installation succesfull."
+        } else {
+            Write-Log "Verify $fixVersion installation failed."
+        }
     }
 }
 
 function Install-UDN {
+    <#
+    .SYNOPSIS
+        Install ACE User Define Nodes
+
+    .DESCRIPTION
+        Install-UDN is a function that installs used UDNs onto the ace runtime and toolkit
+
+    .PARAMETER installDir
+        The directory where the binaries are installed, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Install-UDN -installDir "C:\Program Files\IBM\ACE\12.0.7.0"
+    #>
     param(
-        $installDir
+        [Parameter(Mandatory=$True)][String]$installDir
     )
 
-    $pwd = [string](Get-Location)
-
-    if (Test-Path -Path "$pwd\udn\toolkit\") {
-        $pluginDir = "$installDir\tools\plugins"
-        Write-Host "Copying from $pwd\udn\toolkit\ to $pluginDir"
-        Copy-Item -Path $pwd\udn\toolkit\* -Destination $pluginDir -PassThru -Force
-    } else {
-        Write-Host "$pwd\udn\toolkit\ does not exists, skipping UDN toolkit copy ..."
+    Begin{
+        Write-Log "Begin installation UDN ..."
     }
 
-    if (Test-Path -Path "$pwd\udn\runtime\") {
-        $jpluginDir = "$installDir\server\jplugin"
-        Write-Host "Copying from $pwd\udn\runtime\ to $jpluginDir"
-        Copy-Item -Path $pwd\udn\runtime\* -Destination $jpluginDir -PassThru -Force
-    } else {
-        Write-Host "$pwd\udn\runtime\ does not exists, skipping UDN runtime copy ..."
+    Process{
+        Try{
+            $pwd = [string](Get-Location)
+
+            if (Test-Path -Path "$pwd\udn\toolkit\") {
+                $pluginDir = "$installDir\tools\plugins"
+                Write-Log "Copying from $pwd\udn\toolkit\ to $pluginDir"
+                Copy-Item -Path $pwd\udn\toolkit\* -Destination $pluginDir -PassThru -Force | Out-Null
+            } else {
+                Write-Log "$pwd\udn\toolkit\ does not exists, skipping UDN toolkit copy ..."
+            }
+
+            if (Test-Path -Path "$pwd\udn\runtime\") {
+                $jpluginDir = "$installDir\server\jplugin"
+                Write-Log "Copying from $pwd\udn\runtime\ to $jpluginDir"
+                Copy-Item -Path $pwd\udn\runtime\* -Destination $jpluginDir -PassThru -Force | Out-Null
+            } else {
+                Write-Log "$pwd\udn\runtime\ does not exists, skipping UDN runtime copy ..."
+            }
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured installing UDN's"
+            Break
+        }
     }
 
+    End{
+        If($?){
+            Write-Log "Installation of UDN's succesfull."
+        } else {
+            Write-Log "Installation of UDN's failed."
+        }
+    }
 }
 
 function Install-SharedClasses {
+    <#
+    .SYNOPSIS
+        Install libraries into the Shared-Classes directory of ACE
+
+    .DESCRIPTION
+        Install-SharedClasses is a function that copies used jar files into the shared-classes directory of the
+        ACE runtime
+
+    .PARAMETER runtimeBasePath
+        The directory where the ACE runtime is located, windows default is C:\ProgramData\IBM\MQSI
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Install-SharedClasses -runtimeBasePath "C:\ProgramData\IBM\MQSI"
+    #>
     param(
-        $runtimeBasePath
+        [Parameter(Mandatory=$True)][String]$runtimeBasePath
     )
 
-    $pwd = [string](Get-Location)
+    Begin{
+        Write-Log "Start install shared-classes ..."
+    }
 
-    if (Test-Path -Path "$pwd\shared-classes") {
-        $sharedClassesDir = "$runtimeBasePath\shared-classes"
-        Write-Host "Copying from $pwd\shared-classes\ to $sharedClassesDir"
-        Copy-Item -Path $pwd\shared-classes\* -Destination $sharedClassesDir -PassThru -Force
-    } else {
-        Write-Host "$pwd\shared-classes does not exists, skipping shared-classes copy ..."
+    Process{
+        Try{
+            $pwd = [string](Get-Location)
+            if (Test-Path -Path "$pwd\shared-classes") {
+                $sharedClassesDir = "$runtimeBasePath\shared-classes"
+                Write-Log "Copying from $pwd\shared-classes\ to $sharedClassesDir"
+                Copy-Item -Path $pwd\shared-classes\* -Destination $sharedClassesDir -PassThru -Force | Out-Null
+            } else {
+                Write-Log "$pwd\shared-classes does not exists, skipping shared-classes copy ..."
+            }
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured installing shared-classes"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Installing shared-classes succesfull."
+        } else {
+            Write-Log "Installing shared-classes failed."
+        }
     }
 }
 
 function Install-JavaSecurity {
+    <#
+    .SYNOPSIS
+        Install a custom java.security file
+
+    .DESCRIPTION
+        Install-JavaSecurity is a function that overwrites the existing java.sercurity with an updated one
+
+    .PARAMETER installDir
+        The directory where the binaries are installed, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Install-JavaSecurity -installDir "C:\Program Files\IBM\ACE\12.0.7.0"
+    #>
     param(
-        $installDir
+        [Parameter(Mandatory=$True)][String]$installDir
     )
 
-    $pwd = [string](Get-Location)
+    Begin{
+        $aceZip = "$aceModDir.zip"
+        $dir = [string](Get-Location)
+        Write-Log "Begin installing java.security ..."
+    }
 
-    if (Test-Path -Path "$pwd\security") {
-        $javaSecurityPath = "$installDir\common\jdk\jre\lib\security"
-        Write-Host "Copying from $pwd\security to $javaSecurityPath"
-        Copy-Item -Path $pwd\security\java.security -Destination $javaSecurityPath -PassThru -Force
-    } else {
-        Write-Host "$pwd\security does not exists, skipping java-security copy ..."
+    Process{
+        Try{
+            $pwd = [string](Get-Location)
+
+            if (Test-Path -Path "$pwd\security") {
+                $javaSecurityPath = "$installDir\common\jdk\jre\lib\security"
+                Write-Log "Copying from $pwd\security to $javaSecurityPath"
+                Copy-Item -Path $pwd\security\java.security -Destination $javaSecurityPath -PassThru -Force | Out-Null
+            } else {
+                Write-Log "$pwd\security does not exists, skipping java-security copy ..."
+            }
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured installing java.security"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Installation java.security succesfull."
+        } else {
+            Write-Log "Installation java.security failed."
+        }
     }
 }

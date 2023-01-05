@@ -1,28 +1,25 @@
 #requires -version 5
 <#
 .SYNOPSIS
-    Perform tasks after the installation of the latest ACE mod release
+    Reactivate an older version of ACE
 
 .DESCRIPTION
-    After the installation of a new mod release there are some actions that need to run to set that
-    release active and to allow for the cleanup of the older releases.
-    These actions include
-        1. Updating scripts that use commands/tools from the older release
-        2. Update odbc data sources
-        3. Stop ACE under the original version
-        4. Start ACE under the newest installed version
+    Should an issue occure after upgrading your environment and activating the new version, you can rollback this
+    version by running the rollBackAceInstall script with the same parameters as you wouldd run the postInstallAceModRelease.ps1 script.
+    The script updates any files that have been changed by the release and stop the selected node under the new version
+    and restarts it under the old runtime.
 
 .PARAMETER fixVersion
-    The version of the latest mod release that has been installed before running this script
+    The version of the latest mod release that needs to be rolled back
 
 .PARAMETER oldVersion
-    The original (current) running version of ACE
+    The original version of ACE that needs to be reactivated
 
 .PARAMETER installBasePath
     The base installation path where ACE is running, the default windows installation path is C:\Program Files\IBM\ACE\
 
 .PARAMETER nodeName
-    The name of the integration node that is running and needs to switch to the latest mod release
+    The name of the integration node that is running and needs to switch to the previous mod releasee
 
 .OUTPUTS
     Logging is written to the console
@@ -34,7 +31,7 @@
     Purpose/Change: Initial script development
 
 .EXAMPLE
-    .\postInstallAceModRelease.ps1 -fixVersion 12.0.7.0 -oldVersion 12.0.5.0 -installBasePath "C:\Program Files\ibm\ACE" -nodeName TEST
+    .\rollbackAceInstall.ps1 -fixVersion 12.0.7.0 -oldVersion 12.0.5.0 -installBasePath "C:\Program Files\ibm\ACE" -nodeName TEST
 #>
 
 #-------------------------------------------------[Parameters]------------------------------------------------
@@ -56,14 +53,9 @@ $sScriptVersion = "1.0"
 #-------------------------------------------------[Functions]--------------------------------------------------
 
 #-------------------------------------------------[Execution]--------------------------------------------------
-Write-Log("Begin postInstallAceModRelease...")
-Update-Script -scriptPath C:\temp\backup.cmd -fixVersion $fixVersion -oldVersion $oldVersion
-
-Update-ODBC -fixVersion $fixVersion -driverName DRIVER1
-
-Stop-Ace -oldVersion $oldVersion -installBasePath $installBasePath -nodeName $nodeName
-
+Write-Log("Begin rollbackAceInstall...")
+Update-Script -scriptPath C:\temp\backup.cmd -fixVersion $oldVersion -oldVersion $fixVersion
+Stop-Ace -oldVersion $fixVersion -installBasePath $installBasePath -nodeName $nodeName
 Start-Sleep -Seconds 5
-
-Start-Ace -fixVersion $fixVersion -installBasePath $installBasePath -nodeName $nodeName
-Write-Log("End postInstallAceModRelease.")
+Start-Ace -fixVersion $oldVersion -installBasePath $installBasePath -nodeName $nodeName
+Write-Log("End rollbackAceInstall.")
