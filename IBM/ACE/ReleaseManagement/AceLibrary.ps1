@@ -112,12 +112,11 @@ function Update-Script {
         Try{
             if (-Not (Test-Path -Path $scriptPath)) {
                 Write-Log "$scriptPath doesn't exists, skipping."
-                Break
+            } else {
+                $scriptContent = Get-Content -Path "$scriptPath" -Raw
+                $scriptContent = $scriptContent -replace $oldVersion, $fixVersion
+                Set-Content -Path "$scriptPath" -Value $scriptContent
             }
-
-            $scriptContent = Get-Content -Path "$scriptPath" -Raw
-            $scriptContent = $scriptContent -replace $oldVersion, $fixVersion
-            Set-Content -Path "$scriptPath" -Value $scriptContent
         }
 
         Catch{
@@ -135,14 +134,67 @@ function Update-Script {
     }
 }
 
-function Update-EventViewer {
+function Create-EventViewer {
+    <#
+    .SYNOPSIS
+        Create a new EventViewer custom view for the latest ACE mod release
+
+    .DESCRIPTION
+        Create-Eventviewer is a function that creates a new custom view in the system event viewer just for the
+        latest mod release of ACE
+
+    .PARAMETER fixVersion
+        The version of the latest mod release that has been installed before running this script
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Create-EventViewer -fixVersion 12.0.7.0
+
+    #>
     param(
-        [Parameter(Mandatory=$True)][String]$fixVersion,
-        [Parameter(Mandatory=$True)][String]$viewName
+        [Parameter(Mandatory=$True)][String]$fixVersion
     )
 
-    #replace source in event viewer custom view
-    #more difficult then expected, needs to be investigated further
+    Begin {
+        $pwd = [string](Get-Location)
+        $templateFile = "$pwd\eventviewer\ACE_custom_view_template.xml"
+        $targetFile = "$pwd\eventviewer\ACE_custom_view_$fixVersion.xml"
+    }
+
+    Process {
+        Try {
+            $viewVersion = $fixVersion.replace('.','')
+            if (-Not (Test-Path -Path $templateFile)) {
+                Write-Log "$templateFile doesn't exists, skipping."
+            } else {
+                $scriptContent = Get-Content -Path "$templateFile" -Raw
+                $scriptContent = $scriptContent -replace "##viewVersion##", $viewVersion
+                New-Item -Path "$targetFile" -Force | Out-Null
+                Set-Content -Path "$targetFile" -Value $scriptContent
+                Write-Log "Created $targetFile"
+                & eventvwr.exe /v:$targetFile
+                Remove-Item -Path "$targetFile"
+            }
+        }
+
+        Catch {
+            Write-Log "An exception occured updating $scriptPath to $fixVersion $error"
+            Break
+        }
+    }
+
+    End {
+        If($?){
+            Write-Log "Creating EventViewer custom log succesfull, please delete any old views present."
+        } else {
+            Write-Log "Creating EventViewer custom logfailed."
+        }
+    }
 }
 
 function Update-ODBC {
@@ -181,7 +233,8 @@ function Update-ODBC {
 
     Process{
         Try{
-            & odbcconf CONFIGSYSDSN "IBM App Connect Enterprise $fixVersion - DataDirect Technologies 64-BIT Oracle Wire Protocol" "DSN=$driverName"
+            $output = & odbcconf CONFIGSYSDSN "IBM App Connect Enterprise $fixVersion - DataDirect Technologies 64-BIT Oracle Wire Protocol" "DSN=$driverName"
+            Write-Log $output
         }
 
         Catch{
