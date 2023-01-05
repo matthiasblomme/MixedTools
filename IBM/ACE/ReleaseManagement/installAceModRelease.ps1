@@ -11,6 +11,7 @@
         4. Installing User Defined Nodes
         5. Installing java.security
         6. Installing shared-classes
+        7. Creating a custom event view
 
 .PARAMETER fixVersion
     The version of the latest mod release that has been installed before running this script

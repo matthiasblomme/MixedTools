@@ -18,6 +18,7 @@
         7. Install custom user defined nodes
         8. Install libraries in the shared-classes
         9. Update the java.security file
+        10. Create a custom event view
 
 .OUTPUTS
     Logging is written to the console
@@ -178,12 +179,11 @@ function Create-EventViewer {
                 Set-Content -Path "$targetFile" -Value $scriptContent
                 Write-Log "Created $targetFile"
                 & eventvwr.exe /v:$targetFile
-                Remove-Item -Path "$targetFile"
             }
         }
 
         Catch {
-            Write-Log "An exception occured updating $scriptPath to $fixVersion $error"
+            Write-Log "An exception occured creating the event view for $fixVersion"
             Break
         }
     }
