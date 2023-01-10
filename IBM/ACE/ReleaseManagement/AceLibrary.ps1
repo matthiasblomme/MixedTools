@@ -18,7 +18,6 @@
         7. Install custom user defined nodes
         8. Install libraries in the shared-classes
         9. Update the java.security file
-        10. Create a custom event view
 
 .OUTPUTS
     Logging is written to the console
@@ -68,6 +67,42 @@ function Write-Log {
 
     End{}
 
+}
+
+function Check-Service {
+    <#
+    .SYNOPSIS
+        Check if a service exists and capture the error if it doesn't
+
+    .DESCRIPTION
+        Check-Service is a function that checks if a service exists and return the name of the service if it does.
+        If the service doesn't exist an empty string is returned.
+
+    .PARAMETER serviceName
+        The name of the service to check
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Check-Service -serviceName "bthserv"
+
+    #>
+
+    param (
+        [Parameter(Mandatory=$True, Position=0)][String]$serviceName
+    )
+    Begin{}
+
+    Process{
+        $service = Get-Service -Name $serviceName -Erroraction 'silentlycontinue'
+        return $service
+    }
+
+    End{}
 }
 
 function Update-Script {
@@ -122,7 +157,7 @@ function Update-Script {
 
         Catch{
             Write-Log "An exception occured updating $scriptPath to $fixVersion $error"
-            Break
+            return
         }
     }
 
@@ -183,8 +218,8 @@ function Create-EventViewer {
         }
 
         Catch {
-            Write-Log "An exception occured creating the event view for $fixVersion"
-            Break
+            Write-Log "An exception occured creating the event viewer for $fixVersion"
+            return
         }
     }
 
@@ -239,7 +274,7 @@ function Update-ODBC {
 
         Catch{
             Write-Log "An exception occured updating $driverName to $fixVersion"
-            Break
+            return
         }
     }
 
@@ -504,11 +539,11 @@ function Install-ModRelease {
     Process{
         Try{
             $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
-            $service = Get-Service -Name $serviceName
+            $service = Check-Service -serviceName $serviceName
             if($service.Length -gt 0)
             {
                 Write-Log "Service $serviceName already exists, skipping re-installation."
-                break;
+                return
             }
 
             Set-Location $aceModDir
@@ -601,7 +636,7 @@ rem ]
                 }
             } else {
                 Write-Log "Can't locate $mqsiprofilePath, skipping"
-                break
+                return
             }
         }
 
@@ -657,7 +692,7 @@ function Check-AceInstall {
     Process{
         Try{
             $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
-            $service = Get-Service -Name $serviceName
+            $service = Check-Service -serviceName $serviceName
             if($service.Length -gt 0)
             {
                 Write-Log "$fixVersion appears to be properly installed, continuing ..."
@@ -754,7 +789,7 @@ function Install-UDN {
         Catch
         {
             Write-Log "An exception occured installing UDN's"
-            Break
+            return
         }
     }
 
@@ -811,7 +846,7 @@ function Install-SharedClasses {
         Catch
         {
             Write-Log "An exception occured installing shared-classes"
-            Break
+            return
         }
     }
 
