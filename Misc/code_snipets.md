@@ -3,6 +3,14 @@
 
 ## Windows
 
+### Batch
+
+#### Run as different user
+runas /user:{username} {command/script to run}
+
+#### Check user status and groups
+net user /dom {username}
+
 ### Powershell
 
 #### Get port in use 
