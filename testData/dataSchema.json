@@ -1,0 +1,15 @@
+{
+  "title": "data",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "Auto generated JSON schema based on the 'data' file",
+  "type": "object",
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {}
+    },
+    "key": {
+      "type": "string"
+    }
+  }
+}

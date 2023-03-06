@@ -1,0 +1,1 @@
+echo dis ql(*) | runmqsc QmgrV10 | grep -oP "(?<=QUEUE\().*?(?=\))" | awk '{printf "ALTER QL(%s) MAXDEPTH(9999)\n",$1}'

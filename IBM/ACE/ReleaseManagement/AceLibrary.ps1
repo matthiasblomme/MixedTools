@@ -492,6 +492,58 @@ function Unzip-ModRelease {
     }
 }
 
+#TODO: test
+function Unzip-InterimFix {
+    <#
+    .SYNOPSIS
+        Unzip an interim fix deliverable to a local directory
+
+    .DESCRIPTION
+        Unzip-InterimFix is a function that extracts the contents of an interim fix deliverable zip to a local directory
+
+    .PARAMETER fixName
+        The name of the interim fix to install
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Unzip-InterimFix -fixName 12.0.7.0-ACE-WinX64-LAIT42906
+    #>
+    param (
+        [Parameter(Mandatory=$True)][String]$fixName
+    )
+
+    Begin{
+        $aceZip = "$fixName.zip"
+        $dir = [string](Get-Location)
+        Write-Log "Begin unzip $aceZip to $dir\$fixName ..."
+    }
+
+    Process{
+        Try{
+            Expand-Archive $aceZip -DestinationPath $dir\$fixName -Force
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured unzip $aceZip to $dir\$fixName"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Unzip $aceZip to $dir\$fixName succesfull."
+        } else {
+            Write-Log "Unzip $aceZip to $dir\$fixName failed."
+        }
+    }
+}
+
 function Install-ModRelease {
     <#
     .SYNOPSIS
@@ -576,6 +628,255 @@ function Install-ModRelease {
             Write-Log "Installation of $fixVersion succesfull."
         } else {
             Write-Log "Installation of $fixVersion failed."
+            exit 1
+        }
+    }
+}
+
+#TODO: test
+function TestInstall-ModRelease {
+    <#
+    .SYNOPSIS
+        TestInstall an ACE mod release
+
+    .DESCRIPTION
+        TestInstall-ModRelease installs an ACE mod release onto the system
+
+    .PARAMETER fixVersion
+        The version of the mod release to testinstall
+
+    .PARAMETER aceModDir
+        The name of the directoy to testinstall from
+
+    .PARAMETER installDir
+        The directory to testinstall the binaries to, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .PARAMETER logBasePath
+        The directory to write the testinstallation log to (in the file Ace_intall_$fixVersion.log)
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Install-ModRelease -fixVersion 12.0.7.0 -aceModDir 12.0-ACE-WINX64-12.0.7.0 -installDir "C:\Program Files\IBM\ACE\12.0.7.0" -logBasePath "c:\temp\"
+    #>
+    param (
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$aceModDir,
+        [Parameter(Mandatory=$True)][String]$installDir,
+        [Parameter(Mandatory=$True)][String]$logBasePath
+    )
+
+    Begin{
+        $aceExe = "ACESetup$fixVersion.exe"
+        $logFile = "$logBasePath\Ace_intall_$fixVersion.log"
+        $aceInstallCommand = $aceExe + " /testinstall /quiet LICENSE_ACCEPTED=TRUE InstallFolder=`"" + $installDir + "`" /log " + $logFile
+        Write-Log "Begin install of $fixVersion ..."
+        Write-Log "(this may take some time) ..."
+    }
+
+    Process{
+        Try{
+            $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
+            $service = Check-Service -serviceName $serviceName
+            if($service.Length -gt 0)
+            {
+                Write-Log "Service $serviceName already exists, skipping re-installation."
+                return
+            }
+
+            Set-Location $aceModDir
+            Write-Log "Going to run $aceInstallCommand"
+            $output = (& cmd /c $aceInstallCommand)
+            Write-Log $output
+            if($LASTEXITCODE -eq 0)
+            {
+                Write-Log "The installation succeeded, continuing ..."
+            }
+            else
+            {
+                Write-Log "The installation failed, please check $logFile"
+                exit 1;
+            }
+            Set-Location ../
+            Write-Log "Removing unzipped mod release"
+            Remove-Item -Path $aceModDir -Recurse -Force
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured installing $fixVersion"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Installation of $fixVersion succesfull."
+        } else {
+            Write-Log "Installation of $fixVersion failed."
+            exit 1
+        }
+    }
+}
+
+#TODO: test
+function Install-InterimFix {
+    <#
+    .SYNOPSIS
+        Install an ACE intermin fix
+
+    .DESCRIPTION
+        Install-InterimFix installs an ACE interim fix onto the system
+
+    .PARAMETER aceVersion
+        The version of runtime to install to
+
+    .PARAMETER fixName
+        The name of the fix to install
+
+    .PARAMETER installDir
+        The directory to install the binaries to, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Install-ModRelease -aceVersion 12.0.7.0 -fixName 12.0.7.0-ACE-WinX64-LAIT42906 -installDir "C:\Program Files\IBM\ACE\12.0.7.0"
+    #>
+    param (
+        [Parameter(Mandatory=$True)][String]$aceVersion,
+        [Parameter(Mandatory=$True)][String]$fixName,
+        [Parameter(Mandatory=$True)][String]$installDir
+    )
+
+    Begin{
+        $aceExe = "mqsifixinst.cmd"
+        $aceInstallCommand = $aceExe + " `"" + $installDir + "`" install " + $fixName
+        Write-Log "Begin install of $fixName ..."
+        Write-Log "(this may take some time) ..."
+    }
+
+    Process{
+        Try{
+            $dir = [string](Get-Location)
+            $aceFixDir = $dir/$fixName
+            Set-Location $aceFixDir
+            Write-Log "Going to run $aceInstallCommand"
+            $output = (& cmd /c $aceInstallCommand)
+            Write-Log $output
+            if($LASTEXITCODE -eq 0)
+            {
+                Write-Log "The installation succeeded, continuing ..."
+            }
+            else
+            {
+                Write-Log "The installation failed, please check $logFile"
+                exit 1;
+            }
+            Set-Location ../
+            Write-Log "Removing unzipped mod release"
+            Remove-Item -Path $aceFixDir -Recurse -Force
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured installing $fixName"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Installation of $fixName succesfull."
+        } else {
+            Write-Log "Installation of $fixName failed."
+            exit 1
+        }
+    }
+}
+
+#TODO: test
+function TestInstall-InterimFix {
+    <#
+    .SYNOPSIS
+        TestInstall an ACE intermin fix
+
+    .DESCRIPTION
+        TestInstall-InterimFix testinstalls an ACE interim fix onto the system
+
+    .PARAMETER aceVersion
+        The version of runtime to testinstall to
+
+    .PARAMETER fixName
+        The name of the fix to testinstall
+
+    .PARAMETER installDir
+        The directory to testinstall the binaries to, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Install-ModRelease -aceVersion 12.0.7.0 -fixName 12.0.7.0-ACE-WinX64-LAIT42906 -installDir "C:\Program Files\IBM\ACE\12.0.7.0"
+    #>
+    param (
+        [Parameter(Mandatory=$True)][String]$aceVersion,
+        [Parameter(Mandatory=$True)][String]$fixName,
+        [Parameter(Mandatory=$True)][String]$installDir,
+        [Parameter(Mandatory=$True)][String]$logBasePath
+    )
+
+    Begin{
+        $aceExe = "mqsifixinst.cmd"
+        $aceInstallCommand = $aceExe + " `"" + $installDir + "`" testinstall " + $fixName
+        Write-Log "Begin install of $fixName ..."
+        Write-Log "(this may take some time) ..."
+    }
+
+    Process{
+        Try{
+            $dir = [string](Get-Location)
+            $aceFixDir = $dir/$fixName
+            Set-Location $aceFixDir
+            Write-Log "Going to run $aceInstallCommand"
+            $output = (& cmd /c $aceInstallCommand)
+            Write-Log $output
+            if($LASTEXITCODE -eq 0)
+            {
+                Write-Log "The installation succeeded, continuing ..."
+            }
+            else
+            {
+                Write-Log "The installation failed, please check $logFile"
+                exit 1;
+            }
+            Set-Location ../
+            Write-Log "Removing unzipped mod release"
+            Remove-Item -Path $aceFixDir -Recurse -Force
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured installing $fixName"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Installation of $fixName succesfull."
+        } else {
+            Write-Log "Installation of $fixName failed."
             exit 1
         }
     }
@@ -733,6 +1034,89 @@ function Check-AceInstall {
             Write-Log "Verify $fixVersion installation succesfull."
         } else {
             Write-Log "Verify $fixVersion installation failed."
+        }
+    }
+}
+
+#TODO: test
+function Check-MqsiService {
+    <#
+    .SYNOPSIS
+        Check if ACE is properly installed
+
+    .DESCRIPTION
+        Check-AceInstall is a function that verifies if ACE is properly installed by checking the service is running
+        and by verifying that the command environment works
+
+    .PARAMETER fixVersion
+        The version of ACE to verify
+
+    .PARAMETER installDir
+       The directory where the binaries are installed, windows default is C:\Program Files\IBM\ACE\<version>
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Stop-Ace -fixVersion 12.0.5.0 -installBasePath "C:\Program Files\IBM\ACE\" -nodeName TestNode
+    #>
+    param(
+        [Parameter(Mandatory=$True)][String]$fixVersion,
+        [Parameter(Mandatory=$True)][String]$installDir,
+        [Parameter(Mandatory=$True)][String]$searchString
+    )
+
+    Begin{
+        Write-Log "Begin installation check ..."
+    }
+
+    Process{
+        Try{
+            $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
+            $service = Check-Service -serviceName $serviceName
+            if($service.Length -gt 0)
+            {
+                Write-Log "$fixVersion appears to be properly installed, continuing ..."
+            }
+            else
+            {
+                Write-Log "Failed to verify $fixVersion installation (service $serviceName not found), check the installation"
+                exit 1
+            }
+
+            #check mqsiprofile
+            $pwd = [string](Get-Location)
+            $checkScriptPath =  "$pwd\checkAceVersion.bat"
+            Write-Log "Creating temporary file $checkScriptPath"
+            $null = New-Item -Path ./checkAceVersion.bat -Force
+            Add-Content -Path $checkScriptPath -value "call `"$installDir\server\bin\mqsiprofile.cmd`""
+            Add-Content -Path $checkScriptPath -value "call `"mqsiservice.exe`" -v"
+            $output = & $checkScriptPath
+            Remove-Item -Path $checkScriptPath
+            $selection = $output | Select-String $searchString
+            if ($selection -like "*$searchString*") {
+                Write-Log "$searchString appears to be properly installed, continuing ..."
+            } else {
+                Write-Log "Failed to verify $searchString installation, please verify"
+                exit 1
+            }
+        }
+
+        Catch
+        {
+            Write-Log "An exception occured verifying $searchString installation"
+            Break
+        }
+    }
+
+    End{
+        If($?){
+            Write-Log "Verify $searchString installation succesfull."
+        } else {
+            Write-Log "Verify $searchString installation failed."
         }
     }
 }

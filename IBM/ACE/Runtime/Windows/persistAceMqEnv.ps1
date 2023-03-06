@@ -6,6 +6,7 @@ $envArray = [System.Environment]::GetEnvironmentVariables()
 
 Write-Host "-----------------------------------------------------------------"
 Write-Host "Script is running in print mode, it will not execute the commands"
+Write-Host "   Remove the comment on line 18 and 24 to switch to write mode  "
 Write-Host "-----------------------------------------------------------------"
 
 foreach($key in $envArray.keys){
