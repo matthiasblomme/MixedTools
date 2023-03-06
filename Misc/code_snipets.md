@@ -15,3 +15,10 @@ mqsilist NODE -r | select-string -Pattern '(running)|(stopped)'
 
 ## Linux
 
+### Shell
+
+#### grep 
+... | grep -oP "(?<=QUEUE\().*?(?=\))" 
+
+#### awk
+... | awk '{printf "ALTER QL(%s) MAXDEPTH(9999)\n",$1}'
