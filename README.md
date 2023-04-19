@@ -1,2 +1,2 @@
 # MixedTools
-A mixed set of usefull tools
+A mixed set of useful tools
