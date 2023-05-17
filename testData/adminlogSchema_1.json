@@ -1,0 +1,51 @@
+{
+  "title": "MQEvent",
+  "type": "object",
+  "properties": {
+    "Message": {
+      "type": "object",
+      "properties": {
+        "CommandCode": {
+          "type": "string"
+        },
+        "CompCode": {
+          "type": "string"
+        },
+        "Type": {
+          "type": "string"
+        },
+        "Control": {
+          "type": "string"
+        },
+        "Version": {
+          "type": "string"
+        },
+        "Command": {
+          "type": "string"
+        },
+        "Time": {
+          "type": "string"
+        },
+        "Inserts": {
+          "type": "array",
+          "items": {
+            "properties": {
+              "MQCACF_EVENT_USER_ID": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "MsgSeqNumber": {
+          "type": "string"
+        },
+        "ReasonCode": {
+          "type": "string"
+        },
+        "Reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

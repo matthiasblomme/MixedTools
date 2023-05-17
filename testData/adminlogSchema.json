@@ -1,0 +1,56 @@
+{
+  "title": "adminlog",
+  "description": "Auto generated JSON schema based on the 'adminlog' file",
+  "type": "object",
+  "properties": {
+    "text": {
+      "type": "string"
+    },
+    "message": {
+      "type": "object",
+      "properties": {
+        "number": {
+          "type": "number"
+        },
+        "localTimestamp": {
+          "type": "string"
+        },
+        "severityCode": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string"
+        }
+      }
+    },
+    "inserts": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "text": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "detailedText": {
+      "type": "string"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

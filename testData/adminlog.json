@@ -1,0 +1,211 @@
+{
+  "Message": {
+    "Type": "7",
+    "Version": "2",
+    "CommandCode": "43",
+    "Command": "MQCMD_CONFIG_EVENT",
+    "MsgSeqNumber": "1",
+    "Control": "1",
+    "CompCode": "0",
+    "Time": "2023-03-16 12:34:34.640",
+    "ReasonCode": "2367",
+    "Reason": "MQRC_CONFIG_CREATE_OBJECT",
+    "Inserts": [
+      {
+        "MQCACF_EVENT_USER_ID": "SRV-EDITESB1"
+      },
+      {
+        "MQBACF_EVENT_SECURITY_ID": "1d010105000000000005150000008aa7323f07e53b2b95589f372ef4000000000000000000000000"
+      },
+      {
+        "MQIACF_EVENT_ORIGIN": "3"
+      },
+      {
+        "MQCACF_EVENT_Q_MGR": "PSAAEDIMQTEST                                   "
+      },
+      {
+        "MQBACF_FIRST/MQBACF_EVENT_ACCOUNTING_TOKEN": "160105150000008aa7323f07e53b2b95589f372ef4000000000000000000000b"
+      },
+      {
+        "MQCACF_EVENT_APPL_IDENTITY": "                                "
+      },
+      {
+        "MQIACF_EVENT_APPL_TYPE": "28"
+      },
+      {
+        "MQCACF_EVENT_APPL_NAME": "MQ Explorer 7.5.0           "
+      },
+      {
+        "MQCACF_EVENT_APPL_ORIGIN": "    "
+      },
+      {
+        "MQIACF_OBJECT_TYPE": "1"
+      },
+      {
+        "MQCA_Q_NAME": "ADMINEVCENTSTEST4                               "
+      },
+      {
+        "MQCA_Q_DESC": "                                                                "
+      },
+      {
+        "MQCA_PROCESS_NAME": "                                                "
+      },
+      {
+        "MQCA_BACKOUT_REQ_Q_NAME": "                                                "
+      },
+      {
+        "MQCA_INITIATION_Q_NAME": "                                                "
+      },
+      {
+        "MQCA_TRIGGER_DATA": "                                                                "
+      },
+      {
+        "MQCA_CLUS_CHL_NAME": "                                                "
+      },
+      {
+        "MQCA_CUSTOM": "                                                                                                                                "
+      },
+      {
+        "MQCA_CLUSTER_NAME": "                                                "
+      },
+      {
+        "MQCA_CLUSTER_NAMELIST": "                                                "
+      },
+      {
+        "MQCA_CREATION_DATE": "2023-03-16  "
+      },
+      {
+        "MQCA_CREATION_TIME": "13.34.34"
+      },
+      {
+        "MQCA_ALTERATION_DATE": "2023-03-16  "
+      },
+      {
+        "MQCA_ALTERATION_TIME": "13.34.34"
+      },
+      {
+        "9": "0"
+      },
+      {
+        "10": "0"
+      },
+      {
+        "6": "0"
+      },
+      {
+        "5": "0"
+      },
+      {
+        "15": "5000"
+      },
+      {
+        "13": "4194304"
+      },
+      {
+        "22": "0"
+      },
+      {
+        "23": "1"
+      },
+      {
+        "4": "2"
+      },
+      {
+        "8": "1"
+      },
+      {
+        "16": "0"
+      },
+      {
+        "21": "999999999"
+      },
+      {
+        "12": "0"
+      },
+      {
+        "24": "0"
+      },
+      {
+        "28": "1"
+      },
+      {
+        "29": "1"
+      },
+      {
+        "26": "0"
+      },
+      {
+        "40": "80"
+      },
+      {
+        "41": "20"
+      },
+      {
+        "42": "1"
+      },
+      {
+        "43": "0"
+      },
+      {
+        "44": "0"
+      },
+      {
+        "54": "999999999"
+      },
+      {
+        "46": "0"
+      },
+      {
+        "34": "0"
+      },
+      {
+        "78": "0"
+      },
+      {
+        "128": "-3"
+      },
+      {
+        "134": "-3"
+      },
+      {
+        "123": "-3"
+      },
+      {
+        "45": "1"
+      },
+      {
+        "61": "0"
+      },
+      {
+        "95": "0"
+      },
+      {
+        "96": "0"
+      },
+      {
+        "98": "-3"
+      },
+      {
+        "184": "1"
+      },
+      {
+        "188": "0"
+      },
+      {
+        "190": "0"
+      },
+      {
+        "272": "2"
+      },
+      {
+        "274": "-1"
+      },
+      {
+        "7": "1"
+      },
+      {
+        "20": "1"
+      }
+    ]
+  }
+}

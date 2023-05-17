@@ -34,7 +34,7 @@
     Purpose/Change: Initial script development
 
 .EXAMPLE
-    .\postInstallAceModRelease.ps1 -fixVersion 12.0.7.0 -oldVersion 12.0.5.0 -installBasePath "C:\Program Files\ibm\ACE" -nodeName TEST
+    .\postInstallAceModRelease.ps1 -fixVersion 12.0.7.0 -oldVersion 12.0.5.0 -installBasePath "C:\Program Files\ibm\ACE" -nodeName TEST -hostName localhost
 #>
 
 #-------------------------------------------------[Parameters]------------------------------------------------
@@ -42,7 +42,8 @@ param(
     [parameter(Mandatory=$true)][String]$fixVersion,
     [parameter(Mandatory=$true)][String]$oldVersion,
     [parameter(Mandatory=$true)][String]$installBasePath,
-    [parameter(Mandatory=$true)][String]$nodeName
+    [parameter(Mandatory=$true)][String]$nodeName,
+    [parameter(Mandatory=$false)][String]$hostName
 )
 
 #-----------------------------------------------[Initialisations]----------------------------------------------
@@ -59,11 +60,17 @@ $sScriptVersion = "1.0"
 Write-Log("Begin postInstallAceModRelease...")
 Update-Script -scriptPath C:\temp\backup.cmd -fixVersion $fixVersion -oldVersion $oldVersion
 
-Update-ODBC -fixVersion $fixVersion -driverName DRIVER1
-
 Stop-Ace -oldVersion $oldVersion -installBasePath $installBasePath -nodeName $nodeName
+
+Update-ODBC -fixVersion $fixVersion -driverName DRIVER1
 
 Start-Sleep -Seconds 5
 
 Start-Ace -fixVersion $fixVersion -installBasePath $installBasePath -nodeName $nodeName
+
+if ($hostName -ne '') {
+    Check-httpHealth -hostName $host
+    Check-httpsHealth -hostName $host
+}
+
 Write-Log("End postInstallAceModRelease.")

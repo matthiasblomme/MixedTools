@@ -1,6 +1,9 @@
 #requires -version 5
 <#
-.SYNOPSIS
+
+ #TODO: update documentation
+
+ .SYNOPSIS
     Library with functions related to ACE installation and management
 
 .DESCRIPTION
@@ -31,7 +34,7 @@
 
 #------------------------------------------------[Declarations]------------------------------------------------
 #Library Version
-$LibraryVersion = "1.0"
+$LibraryVersion = "1.1"
 
 #-------------------------------------------------[Functions]--------------------------------------------------
 function Write-Log {
@@ -492,7 +495,6 @@ function Unzip-ModRelease {
     }
 }
 
-#TODO: test
 function Unzip-InterimFix {
     <#
     .SYNOPSIS
@@ -633,97 +635,7 @@ function Install-ModRelease {
     }
 }
 
-#TODO: test
-function TestInstall-ModRelease {
-    <#
-    .SYNOPSIS
-        TestInstall an ACE mod release
-
-    .DESCRIPTION
-        TestInstall-ModRelease installs an ACE mod release onto the system
-
-    .PARAMETER fixVersion
-        The version of the mod release to testinstall
-
-    .PARAMETER aceModDir
-        The name of the directoy to testinstall from
-
-    .PARAMETER installDir
-        The directory to testinstall the binaries to, windows default is C:\Program Files\IBM\ACE\<version>
-
-    .PARAMETER logBasePath
-        The directory to write the testinstallation log to (in the file Ace_intall_$fixVersion.log)
-
-    .NOTES
-        Version:        1.0
-        Author:         Matthias Blomme
-        Creation Date:  2022-12-29
-        Purpose/Change: Initial script development
-
-    .EXAMPLE
-        Install-ModRelease -fixVersion 12.0.7.0 -aceModDir 12.0-ACE-WINX64-12.0.7.0 -installDir "C:\Program Files\IBM\ACE\12.0.7.0" -logBasePath "c:\temp\"
-    #>
-    param (
-        [Parameter(Mandatory=$True)][String]$fixVersion,
-        [Parameter(Mandatory=$True)][String]$aceModDir,
-        [Parameter(Mandatory=$True)][String]$installDir,
-        [Parameter(Mandatory=$True)][String]$logBasePath
-    )
-
-    Begin{
-        $aceExe = "ACESetup$fixVersion.exe"
-        $logFile = "$logBasePath\Ace_intall_$fixVersion.log"
-        $aceInstallCommand = $aceExe + " /testinstall /quiet LICENSE_ACCEPTED=TRUE InstallFolder=`"" + $installDir + "`" /log " + $logFile
-        Write-Log "Begin install of $fixVersion ..."
-        Write-Log "(this may take some time) ..."
-    }
-
-    Process{
-        Try{
-            $serviceName = "AppConnectEnterpriseMasterService$fixVersion"
-            $service = Check-Service -serviceName $serviceName
-            if($service.Length -gt 0)
-            {
-                Write-Log "Service $serviceName already exists, skipping re-installation."
-                return
-            }
-
-            Set-Location $aceModDir
-            Write-Log "Going to run $aceInstallCommand"
-            $output = (& cmd /c $aceInstallCommand)
-            Write-Log $output
-            if($LASTEXITCODE -eq 0)
-            {
-                Write-Log "The installation succeeded, continuing ..."
-            }
-            else
-            {
-                Write-Log "The installation failed, please check $logFile"
-                exit 1;
-            }
-            Set-Location ../
-            Write-Log "Removing unzipped mod release"
-            Remove-Item -Path $aceModDir -Recurse -Force
-        }
-
-        Catch
-        {
-            Write-Log "An exception occured installing $fixVersion"
-            Break
-        }
-    }
-
-    End{
-        If($?){
-            Write-Log "Installation of $fixVersion succesfull."
-        } else {
-            Write-Log "Installation of $fixVersion failed."
-            exit 1
-        }
-    }
-}
-
-#TODO: test
+#TODO: test for interim fix
 function Install-InterimFix {
     <#
     .SYNOPSIS
@@ -766,7 +678,7 @@ function Install-InterimFix {
     Process{
         Try{
             $dir = [string](Get-Location)
-            $aceFixDir = $dir/$fixName
+            $aceFixDir = "$dir/$fixName"
             Set-Location $aceFixDir
             Write-Log "Going to run $aceInstallCommand"
             $output = (& cmd /c $aceInstallCommand)
@@ -802,7 +714,7 @@ function Install-InterimFix {
     }
 }
 
-#TODO: test
+#TODO: test  for interim fix
 function TestInstall-InterimFix {
     <#
     .SYNOPSIS
@@ -846,7 +758,7 @@ function TestInstall-InterimFix {
     Process{
         Try{
             $dir = [string](Get-Location)
-            $aceFixDir = $dir/$fixName
+            $aceFixDir = "$dir/$fixName"
             Set-Location $aceFixDir
             Write-Log "Going to run $aceInstallCommand"
             $output = (& cmd /c $aceInstallCommand)
@@ -919,7 +831,7 @@ function Update-Mqsiprofile {
         Try{
             if (Test-Path -Path $mqsiprofilePath) {
                 $fileContent = Get-Content $mqsiprofilePath -Raw
-                $found = $fileContent | Select-String 'MQSI_FREE_MASTER_PARSERS=true' -AllMatches | Foreach {$_.Matches} | Foreach {$_.Value}
+                $found = $fileContent | Select-String $mqsiprofileAddition -AllMatches | Foreach {$_.Matches} | Foreach {$_.Value}
                 if ($found -ne $null)
                 {
                     Write-Log "$mqsiprofileAddition already present, skipping"
@@ -979,7 +891,7 @@ function Check-AceInstall {
         Purpose/Change: Initial script development
 
     .EXAMPLE
-        Stop-Ace -fixVersion 12.0.5.0 -installBasePath "C:\Program Files\IBM\ACE\" -nodeName TestNode
+        Check-AceInstall -fixVersion 12.0.7.0 -installDir "C:\Program Files\ibm\ACE\12.0.7.0"
     #>
     param(
         [Parameter(Mandatory=$True)][String]$fixVersion,
@@ -1038,7 +950,7 @@ function Check-AceInstall {
     }
 }
 
-#TODO: test
+#TODO: test for interim fix
 function Check-MqsiService {
     <#
     .SYNOPSIS
@@ -1301,3 +1213,109 @@ function Install-JavaSecurity {
         }
     }
 }
+
+function Check-httpHealth {
+    <#
+    .SYNOPSIS
+        Http Health Check
+
+    .DESCRIPTION
+        Check-httpHealth writes to the console and prepends the date and time in the "yyyy-MM-dd HH:mm:ss.fff" format
+        to each loch line
+
+    .PARAMETER entry
+        The log line to write
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Write-Host "Begin run ..."
+    #>
+
+    param (
+        [Parameter(Mandatory=$True, Position=0)][String]$hostName
+    )
+    Begin{}
+
+    Process{
+        $url = "https://" + $hostName + ":7093/httplistener/health"
+        $httpResult = Invoke-RestMethod -Method 'Get' -Uri $url
+
+        if ($httpResult.status -eq 'ok')
+        {
+            Write-host "Http call successful"
+        } else {
+            Write-host "Http call failed, check the httplistener"
+        }
+    }
+
+    End{
+    }
+
+}
+
+function Check-httpsHealth {
+    <#
+    .SYNOPSIS
+        Console log writer
+
+    .DESCRIPTION
+        Write-Host writes to the console and prepends the date and time in the "yyyy-MM-dd HH:mm:ss.fff" format
+        to each loch line
+
+    .PARAMETER entry
+        The log line to write
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2022-12-29
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Write-Host "Begin run ..."
+    #>
+
+    param (
+        [Parameter(Mandatory=$True, Position=0)][String]$hostName
+    )
+    Begin{}
+
+    Process{
+
+        $code= @"
+        using System.Net;
+        using System.Security.Cryptography.X509Certificates;
+        public class TrustAllCertsPolicy : ICertificatePolicy {
+            public bool CheckValidationResult(ServicePoint srvPoint, X509Certificate certificate, WebRequest request, int certificateProblem) {
+                return true;
+            }
+        }
+"@
+        Add-Type -TypeDefinition $code -Language CSharp
+        [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy
+        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls -bor [Net.SecurityProtocolType]::Tls11 -bor [Net.SecurityProtocolType]::Tls12
+        $url = "https://" + $hostName + ":7093/httplistener/health"
+        $httpsResult = Invoke-RestMethod -Method 'Get' -Uri $url
+
+
+        if ($httpsResult.status -eq 'ok')
+        {
+            Write-host "Https call successful"
+        } else {
+            Write-host "Https call failed, check the httplistener"
+        }
+    }
+
+    End{
+    }
+
+}
+
+
+Check-httpHealth -hostName beanr-editesb01.netwerk.hessenoordnatie.com
+Check-httpsHealth -hostName beanr-editesb01.netwerk.hessenoordnatie.comf
