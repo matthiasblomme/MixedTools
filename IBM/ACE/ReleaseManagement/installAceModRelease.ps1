@@ -35,7 +35,7 @@
     Purpose/Change: Initial script development
 
 .EXAMPLE
-    .\installAceModRelease.ps1 -fixVersion 12.0.7.0 -installBasePath"C:\Program Files\ibm\ACE" -logBasePath "C:\temp" -runtimeBasePath "C:\ProgramData\IBM\MQSI"
+    .\installAceModRelease.ps1 -fixVersion 12.0.7.0 -installBasePath "C:\Program Files\ibm\ACE" -logBasePath "C:\temp" -runtimeBasePath "C:\ProgramData\IBM\MQSI"
 #>
 
 #-------------------------------------------------[Parameters]------------------------------------------------
@@ -57,7 +57,6 @@ $sScriptVersion = "1.0"
 
 #-------------------------------------------------[Execution]--------------------------------------------------
 Write-Log("Begin installAceModRelease ...")
-
 #run from C:\Users\ADM-BLMM_M\modrelease
 $aceModDir = "12.0-ACE-WINX64-$fixVersion"
 $installDir = "$installBasePath\$fixVersion"

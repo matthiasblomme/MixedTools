@@ -60,11 +60,14 @@ function Write-Log {
     #>
 
     param (
-        [Parameter(Mandatory=$True, Position=0)][String]$entry
+        [Parameter(Mandatory=$False, Position=0)][String]$entry
     )
     Begin{}
 
     Process{
+        if ($entry -eq '') {
+            $entry = " "
+        }
         Write-Host "$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss.fff') $entry"
     }
 
@@ -611,6 +614,7 @@ function Install-ModRelease {
             else
             {
                 Write-Log "The installation failed, please check $logFile"
+                Write-log "code: $LASTEXITCODE"
                 exit 1;
             }
             Set-Location ../
@@ -621,6 +625,8 @@ function Install-ModRelease {
         Catch
         {
             Write-Log "An exception occured installing $fixVersion"
+            Write-Log $_.Exception.getType().FullName
+            Write-Log $_.Exception.Message
             Break
         }
     }
@@ -629,7 +635,7 @@ function Install-ModRelease {
         If($?){
             Write-Log "Installation of $fixVersion succesfull."
         } else {
-            Write-Log "Installation of $fixVersion failed."
+            Write-Log "Installation of $fixVersion failed: $?"
             exit 1
         }
     }
@@ -1315,7 +1321,3 @@ function Check-httpsHealth {
     }
 
 }
-
-
-Check-httpHealth -hostName beanr-editesb01.netwerk.hessenoordnatie.com
-Check-httpsHealth -hostName beanr-editesb01.netwerk.hessenoordnatie.comf
