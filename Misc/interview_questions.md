@@ -2,29 +2,29 @@
 
 ## General
 ### Experiences
- * What are your experiences with [Product], and how do you rate your knowledge here
-   * Check how the interviewee estimates his own knowledge and how he reacts  
+ * Question: What are your experiences with [Product], and how do you rate your knowledge here
+   * Goal: Check how the interviewee estimates his own knowledge and how he reacts  
  * 
 
 ## MQ
 ### Administration
-* How do you connect 2 qmgrs witch each other?
+* Question: How do you connect 2 qmgrs witch each other?
     * channel sec/rec
     * remote q
     * transmit q
-* Describe how you can manage a qmgr
-  * mq web
-  * runmqsc
-  * rest api
-  * mq explorer
-* How familiar are you with runmqsc
-    * how do you
-        * create a queue
-        * query a queue
-        * display queue depth
-        * ...
-* Describe one keypoint when installing and configuring a qmgr
-    * logging ...
+* Question: Describe how you can manage a qmgr
+  * Answer:
+    * mq web
+    * runmqsc
+    * rest api
+    * mq explorer
+* Question: How familiar are you with runmqsc? How do you
+    * create a queue
+    * query a queue
+    * display queue depth
+    * ...
+* Question: Describe one keypoint when installing and configuring a qmgr
+    * Answer: logging ...
 
 ### Security
 * How do you setup mq security
@@ -65,7 +65,6 @@
 * What are these ACE versions called?
 * How familiar are you with the command line?
 
-
 ### Security
 * How do you enable administration security for ACE
   * Authorization vs authentication
@@ -96,6 +95,10 @@
 * What are callable flows and how do they work
   * What is a key security point here? The connection is initiated internally towards externally.
   * What does a switch server do?
+* Are you familiar with standalone integration server?
+* Explain what "ibmint optimize" does
+* Explain the difference between "ibmint deploy" and "imbint package"
+
 ### High availability
 * Explain Multi instance
   * is this the same as HA? If not how can you achieve HA
