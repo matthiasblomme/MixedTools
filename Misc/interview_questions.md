@@ -1,40 +1,50 @@
-#List of interview questions
-
+# List of interview questions ACE and MQ
 ## General
 ### Experiences
- * Question: What are your experiences with [Product], and how do you rate your knowledge here
+ * Question: What are your experiences with [Product], and how do you rate your knowledge there
    * Goal: Check how the interviewee estimates his own knowledge and how he reacts  
- * 
+ * Question: Have you ever come across an issue with [Product] that you were unable to solve? How did you handle that?
+   * Goal: Check how well he is able to call for help when needed.
 
 ## MQ
 ### Administration
-* Question: How do you connect 2 qmgrs witch each other?
-    * channel sec/rec
-    * remote q
-    * transmit q
-* Question: Describe how you can manage a qmgr
+* Question: How do you securely connect 2 qmgrs witch each other?
+  * Answer: ...
+      * setup channel authentication
+      * remote q
+      * transmit q
+* Question: Describe how you can manage a qmgr, what tools can you use
   * Answer:
     * mq web
     * runmqsc
     * rest api
     * mq explorer
 * Question: How familiar are you with runmqsc? How do you
-    * create a queue
-    * query a queue
-    * display queue depth
-    * ...
+  * Answer:
+      * create a queue: def ql(AAA) 
+      * query a queue: dis ql(AAA)
+      * display queue depth: dis ql(AAA) curdepth
+      * display queues with messages: dis ql(*) where(curdepth ge 1)
+      * ...
 * Question: Describe one keypoint when installing and configuring a qmgr
-    * Answer: logging ...
+    * Answer: the qmgr log files, you can't change the log file size after creation, only the number of log files
 
 ### Security
-* How do you setup mq security
+* Question: How do you setup mq security for (large steps, no detailed commands)
     * channel authentication
-    * admin authentication (ldap)
-    * ...
+      * Answer: Setup certificates, cipher suites, channel auth records (blockuser, addressmap, usermap), mq user, channel security exits
+    * Admin authentication (ldap)
+      * Answer: import ldap server cert, configure mq to use ldap (user/pass/dn/certs), refresh security
+    * Question: How do you give someone access to a specific resource?
+      * Answer: 
+        * Check the error logs for the user name 
+        * Set authentication record: SET AUTHREC PROFILE('QUEUE.NAME') OBJTYPE(QUEUE) PRINCIPAL('userid') AUTHADD(ALL)
+        * Grant access to channel: SET CHLAUTH('queue-admin-channel') TYPE(USERMAP) CLNTUSER('userid') USERSRC(MAP) MCAUSER('mqm')
+        * refresh security
 
 ### Concepts
 * Describe how mq pub/sub works
-* Describe how mq clusters work?
+* Describe how mq clusters work
 * Describe how pub/sub works in mq clusters
 * Describe the mq backout mechanism
     * backout count and dlq
