@@ -58,14 +58,19 @@
  
 ### High availability
  * Describe mq high availability
-   * Active/passive aka multi instance
-   * is this the same as HA? If not how can you achieve HA?
-     * what is the biggest issue with MI
-   * MQ RDQM
-   * ...
- * What kinds of high availability setups do you know for mq on cloud 
-   * ...
-
+   * Message high availability vs system ha
+   * Externally managed
+     * System managed HA (containers, cloud, k8s, ...)
+     * Multi instance QMGR
+   * MQ managed
+     * MQ appliance (pair of)
+     * replicated data qmgrs on linux (HA RDQM and DR RDQM)
+     * Clusters
+   * containers/cloud
+     * MI
+     * clusters
+     * Native HA
+     * Native HA cluster
 
 ## ACE
 ### Administration
