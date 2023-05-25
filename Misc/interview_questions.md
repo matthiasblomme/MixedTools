@@ -156,6 +156,14 @@
   * big file pattern ...
 
 ## Cloud
+### Platforms
+* what platforms are you familiar with?
+  * What is you expertise/experience with each of them
+    * azure
+    * google cloud
+    * ibm cloud
+    * aws
+    * ...
 
 
  
