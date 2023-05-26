@@ -43,9 +43,12 @@
         * refresh security
 
 ### Concepts
-* Describe how mq pub/sub works
+* Question: Describe how mq pub/sub works
+  * Answer: Publication on topic en subscription on topic string with wildcards
 * Describe how mq clusters work
+  * Answer: mq clusters allow for queues and publications to be shared between qmgrs in the cluster. Both for replication and availability.
 * Describe how pub/sub works in mq clusters
+  * Answer:
 * Describe the mq backout mechanism
     * backout count and dlq
 * Describe the structure of a mq message
@@ -70,7 +73,7 @@
      * MI
      * clusters
      * Native HA
-     * Native HA cluster
+     * Uniform cluster with native ha qmgrs
 
 ## ACE
 ### Administration
