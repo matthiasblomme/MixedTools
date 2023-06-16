@@ -25,6 +25,9 @@
 #### Get port in use 
     Get-Process -Id (Get-NetTCPConnection -LocalPort 9997).OwningProcess
 
+#### Get open connections for one pdi
+    | Select-Object LocalAddress,LocalPort,RemoteAddress,RemotePort,State,OwningProcess, @{n="ProzessName"; e={( Get-Process -Id $_.OwningProcess).ProcessName}} | Format-Table
+
 #### Filter command output
     mqsilist NODE -r | select-string -Pattern '(running)|(stopped)'
     ... | select-string -Pattern '.*QUEUE\((.*?)\).*'
