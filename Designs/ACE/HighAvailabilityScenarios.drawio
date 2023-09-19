@@ -1,6 +1,6 @@
-<mxfile host="Electron" modified="2023-07-19T08:28:28.099Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.1 Chrome/112.0.5615.204 Electron/24.6.1 Safari/537.36" etag="45rYXpaPhSg9iLZ2Fj-4" version="21.6.1" type="device" pages="15">
+<mxfile host="Electron" modified="2023-08-03T08:44:49.921Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/21.6.5 Chrome/114.0.5735.243 Electron/25.3.1 Safari/537.36" etag="YUGqpFZJ-HE8qGr2RuWc" version="21.6.5" type="device" pages="15">
   <diagram id="z6ilIcbmZor8qnZGDBh0" name="Multi-instance">
-    <mxGraphModel dx="2074" dy="1254" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="1204" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -929,7 +929,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DA ACE &amp; Cross MI MQ" id="XYwL9wbndD6GZtYSlB4F">
-    <mxGraphModel dx="1548" dy="2052" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="2354" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="Vs_GS55WJl2z1pYauYDB-0" />
         <mxCell id="Vs_GS55WJl2z1pYauYDB-1" parent="Vs_GS55WJl2z1pYauYDB-0" />
@@ -1034,7 +1034,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DA ACE &amp; Cross MI MQ Cluster" id="m-akkYdrXmQfI8Hdfv_4">
-    <mxGraphModel dx="1418" dy="1978" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="2354" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="jw2MCA0iwe1ytM3KUruY-0" />
         <mxCell id="jw2MCA0iwe1ytM3KUruY-1" parent="jw2MCA0iwe1ytM3KUruY-0" />
@@ -1211,7 +1211,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DA ACE &amp; DA MQ" id="a72uyr0JLqgzurL86Py2">
-    <mxGraphModel dx="1418" dy="1978" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="2354" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="Zo5mWJ4MHcHmz8Afzjk7-0" />
         <mxCell id="Zo5mWJ4MHcHmz8Afzjk7-1" parent="Zo5mWJ4MHcHmz8Afzjk7-0" />
@@ -1711,7 +1711,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DA ACE &amp; DA MQ Cluster" id="I4AnZ01CvOzUIX9dZ6BT">
-    <mxGraphModel dx="1418" dy="1978" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2074" dy="2354" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="Gm8xRSFlvOajdeJ6kjue-0" />
         <mxCell id="Gm8xRSFlvOajdeJ6kjue-1" parent="Gm8xRSFlvOajdeJ6kjue-0" />
@@ -2284,7 +2284,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DA and SA split" id="vxNS-NFVuvGrLLZqeMcr">
-    <mxGraphModel dx="2074" dy="2354" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1674" dy="1944" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="yJCoxeQTAPn4W8sy-Jn1-0" />
         <mxCell id="yJCoxeQTAPn4W8sy-Jn1-1" parent="yJCoxeQTAPn4W8sy-Jn1-0" />
@@ -2373,7 +2373,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DA ACE &amp; DA MQ Cluster additional qmgr" id="xsW1Hp91uu6vtXSGwBwk">
-    <mxGraphModel dx="2074" dy="2354" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1674" dy="1944" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="2tT1dM4sKyXa_7D5IImd-0" />
         <mxCell id="2tT1dM4sKyXa_7D5IImd-1" parent="2tT1dM4sKyXa_7D5IImd-0" />
@@ -2435,7 +2435,7 @@
     </mxGraphModel>
   </diagram>
   <diagram name=" DA ACE &amp; DA MQ Cluster additional qmgr MI" id="Z71mVM55fN-8KqNR7HlC">
-    <mxGraphModel dx="2074" dy="2354" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1674" dy="1944" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="dgbp1G5LAifhnVhxFn8W-0" />
         <mxCell id="dgbp1G5LAifhnVhxFn8W-1" parent="dgbp1G5LAifhnVhxFn8W-0" />
@@ -2518,12 +2518,12 @@
     </mxGraphModel>
   </diagram>
   <diagram name="DA ACE &amp; DA MQ Cluster additional qmgr MI on same server" id="vGqzOsRS2aThQhUBgrYQ">
-    <mxGraphModel dx="2074" dy="2354" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1674" dy="1944" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0FRZKWunnprD1hbQWFVT-0" />
         <mxCell id="0FRZKWunnprD1hbQWFVT-1" parent="0FRZKWunnprD1hbQWFVT-0" />
         <mxCell id="hqIRG8rzsToO192ibaC1-8" value="MQ Cluster" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#b85450;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="680" y="-595" width="540" height="350" as="geometry" />
+          <mxGeometry x="1005" y="-597" width="540" height="350" as="geometry" />
         </mxCell>
         <mxCell id="0FRZKWunnprD1hbQWFVT-6" value="SERVER 2" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
           <mxGeometry x="410" y="-810" width="140" height="450" as="geometry" />
@@ -2589,86 +2589,86 @@
           <mxGeometry x="70" y="-1080" width="970" height="60" as="geometry" />
         </mxCell>
         <mxCell id="0FRZKWunnprD1hbQWFVT-24" value="Key topics&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;--------------&lt;br&gt;Additional qmgr that contains all the actual queues&lt;br&gt;&lt;br&gt;All queues are clustered but crewated on #3&lt;br&gt;&lt;br&gt;ACE is running in binding or client mode, doesn&#39;t make a difference here.&lt;br&gt;&lt;br&gt;Thoughts&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;-------------&lt;br style=&quot;border-color: var(--border-color);&quot;&gt;Additional licenses are required for MQ #3&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;Conclusion&lt;br&gt;---------------&lt;br&gt;All queues only have one instance and are located on #3&lt;br&gt;&lt;br&gt;The other qmgrs are there as pass-though instances&lt;br&gt;&lt;br&gt;All flows are basically working als flows with additional instances, if there are 2 message on a queue, it is highly likely that both ACE instances process 1 message&lt;br&gt;&lt;br&gt;If Server 3 goes down, server 4 will take over and any messages present on the queues will be available shortly" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;dashed=1;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="1360" y="-985" width="640" height="640" as="geometry" />
+          <mxGeometry x="1759" y="-950" width="640" height="640" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-2" value="Server 4" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="1055" y="-580" width="140" height="320" as="geometry" />
+          <mxGeometry x="1380" y="-582" width="140" height="320" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-3" value="Server 3" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="705" y="-580" width="140" height="320" as="geometry" />
+          <mxGeometry x="1030" y="-582" width="140" height="320" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-4" value="SERVER 2" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="1055" y="-810" width="140" height="210" as="geometry" />
+          <mxGeometry x="1380" y="-812" width="140" height="210" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-5" value="SERVER 1" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="705" y="-810" width="140" height="210" as="geometry" />
+          <mxGeometry x="1030" y="-812" width="140" height="210" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-6" style="rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=2;" parent="0FRZKWunnprD1hbQWFVT-1" source="hqIRG8rzsToO192ibaC1-7" target="hqIRG8rzsToO192ibaC1-22" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-7" value="MI" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="715" y="-440" width="120" height="140" as="geometry" />
+          <mxGeometry x="1040" y="-442" width="120" height="140" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-9" value="ACE2" style="image;html=1;image=img/lib/clip_art/computers/Virtual_Application_128x128.png" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="1095" y="-770" width="80" height="80" as="geometry" />
+          <mxGeometry x="1420" y="-772" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-10" value="ACE1" style="image;html=1;image=img/lib/clip_art/computers/Virtual_Application_128x128.png" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="725" y="-770" width="80" height="80" as="geometry" />
+          <mxGeometry x="1050" y="-772" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-11" value="QMGR2" style="image;html=1;image=img/lib/clip_art/computers/Virtual_Application_128x128.png" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="1095" y="-550" width="80" height="80" as="geometry" />
+          <mxGeometry x="1420" y="-552" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-12" value="QMGR1" style="image;html=1;image=img/lib/clip_art/computers/Virtual_Application_128x128.png" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="725" y="-550" width="80" height="80" as="geometry" />
+          <mxGeometry x="1050" y="-552" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-13" style="rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fillColor=#dae8fc;strokeColor=#6c8ebf;edgeStyle=orthogonalEdgeStyle;" parent="0FRZKWunnprD1hbQWFVT-1" source="hqIRG8rzsToO192ibaC1-10" target="hqIRG8rzsToO192ibaC1-12" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="881" y="-730" />
-              <mxPoint x="881" y="-510" />
+              <mxPoint x="1206" y="-732" />
+              <mxPoint x="1206" y="-512" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-14" style="rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;exitX=0;exitY=0.5;exitDx=0;exitDy=0;edgeStyle=orthogonalEdgeStyle;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="0FRZKWunnprD1hbQWFVT-1" source="hqIRG8rzsToO192ibaC1-9" target="hqIRG8rzsToO192ibaC1-11" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="1019" y="-730" />
-              <mxPoint x="1019" y="-510" />
+              <mxPoint x="1344" y="-732" />
+              <mxPoint x="1344" y="-512" />
             </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-15" style="rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="0FRZKWunnprD1hbQWFVT-1" source="hqIRG8rzsToO192ibaC1-18" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="911.0139442231075" y="-901" as="sourcePoint" />
-            <mxPoint x="780" y="-810" as="targetPoint" />
+            <mxPoint x="1236.0139442231075" y="-903" as="sourcePoint" />
+            <mxPoint x="1105" y="-812" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-16" style="rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" parent="0FRZKWunnprD1hbQWFVT-1" source="hqIRG8rzsToO192ibaC1-18" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1028.0258964143427" y="-901" as="sourcePoint" />
-            <mxPoint x="1130" y="-810" as="targetPoint" />
+            <mxPoint x="1353.0258964143427" y="-903" as="sourcePoint" />
+            <mxPoint x="1455" y="-812" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-17" value="QMGR3" style="image;html=1;image=img/lib/clip_art/computers/Virtual_Application_128x128.png" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="735" y="-410" width="80" height="80" as="geometry" />
+          <mxGeometry x="1060" y="-412" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-18" value="" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#CCCCCC;strokeColor=#6881B3;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.load_balancer;dashed=1;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="860" y="-950" width="210" height="60" as="geometry" />
+          <mxGeometry x="1185" y="-952" width="210" height="60" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-19" style="rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;strokeWidth=2;" parent="0FRZKWunnprD1hbQWFVT-1" source="hqIRG8rzsToO192ibaC1-20" target="hqIRG8rzsToO192ibaC1-22" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-20" value="MI" style="rounded=1;whiteSpace=wrap;html=1;verticalAlign=top;dashed=1;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="1065" y="-440" width="120" height="140" as="geometry" />
+          <mxGeometry x="1390" y="-442" width="120" height="140" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-21" value="QMGR3" style="image;html=1;image=img/lib/clip_art/computers/Virtual_Application_128x128.png" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="1085" y="-410" width="80" height="80" as="geometry" />
+          <mxGeometry x="1410" y="-412" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="hqIRG8rzsToO192ibaC1-22" value="NFS / NAS" style="fontColor=#0066CC;verticalAlign=top;verticalLabelPosition=bottom;labelPosition=center;align=center;html=1;outlineConnect=0;fillColor=#CCCCCC;strokeColor=#6881B3;gradientColor=none;gradientDirection=north;strokeWidth=2;shape=mxgraph.networks.nas_filer;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="898" y="-231" width="100" height="35" as="geometry" />
+          <mxGeometry x="1223" y="-233" width="100" height="35" as="geometry" />
         </mxCell>
         <mxCell id="0FRZKWunnprD1hbQWFVT-7" value="MQ Cluster" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=none;strokeColor=#b85450;verticalAlign=top;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="40" y="-650" width="540" height="350" as="geometry" />
+          <mxGeometry x="26" y="-662" width="540" height="350" as="geometry" />
         </mxCell>
         <mxCell id="RmxJSHK7K5y5swIgx3Sz-0" value="Load balanced - MQ" style="swimlane;horizontal=0;whiteSpace=wrap;html=1;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
           <mxGeometry x="75" y="318" width="1115" height="486" as="geometry" />
@@ -2766,7 +2766,7 @@
           <mxGeometry y="22" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="RmxJSHK7K5y5swIgx3Sz-26" value="Dedicated - MQ" style="swimlane;horizontal=0;whiteSpace=wrap;html=1;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="86" y="1578" width="1115" height="488" as="geometry" />
+          <mxGeometry x="70" y="1342" width="1115" height="488" as="geometry" />
         </mxCell>
         <mxCell id="6yAAIP00PpsYvAQ8hpvK-31" value="EDI" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#d5e8d4;verticalAlign=bottom;strokeColor=#82b366;fontColor=#67AB9F;" parent="RmxJSHK7K5y5swIgx3Sz-26" vertex="1">
           <mxGeometry x="301" y="18" width="526" height="460" as="geometry" />
@@ -2970,7 +2970,7 @@
           <mxGeometry x="-10" y="22" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="RmxJSHK7K5y5swIgx3Sz-73" value="Dedicated - APIs" style="swimlane;horizontal=0;whiteSpace=wrap;html=1;" parent="0FRZKWunnprD1hbQWFVT-1" vertex="1">
-          <mxGeometry x="86" y="2067" width="1115" height="503" as="geometry" />
+          <mxGeometry x="70" y="1831" width="1115" height="503" as="geometry" />
         </mxCell>
         <mxCell id="6yAAIP00PpsYvAQ8hpvK-32" value="EDI" style="rounded=1;whiteSpace=wrap;html=1;fontSize=16;fillColor=#d5e8d4;verticalAlign=bottom;strokeColor=#82b366;fontColor=#67AB9F;" parent="RmxJSHK7K5y5swIgx3Sz-73" vertex="1">
           <mxGeometry x="305.5" y="9" width="526" height="471.5" as="geometry" />
@@ -3155,15 +3155,15 @@
         </mxCell>
         <mxCell id="DjYTAyYF4m-QytB0P-Rm-0" style="rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;fillColor=#f8cecc;strokeColor=#b85450;" parent="0FRZKWunnprD1hbQWFVT-1" source="hqIRG8rzsToO192ibaC1-10" target="hqIRG8rzsToO192ibaC1-11" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="815" y="-720" as="sourcePoint" />
-            <mxPoint x="815" y="-500" as="targetPoint" />
+            <mxPoint x="1140" y="-722" as="sourcePoint" />
+            <mxPoint x="1140" y="-502" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="-FUbcJEZ86q9RNmBNUPH" name="Containers - Standalone MQ/ACE">
-    <mxGraphModel dx="2398" dy="2052" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2924" dy="2354" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -3949,7 +3949,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="-pEuS-jEr2rg_MUIoTmF" name="Containers - Microservices">
-    <mxGraphModel dx="2398" dy="2052" grid="0" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2578" dy="2145" grid="0" gridSize="10" guides="0" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
