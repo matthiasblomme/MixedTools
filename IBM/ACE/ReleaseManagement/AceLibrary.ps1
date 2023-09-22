@@ -687,8 +687,7 @@ function Install-InterimFix {
             $aceFixDir = "$dir/$fixName"
             Set-Location $aceFixDir
             Write-Log "Going to run $aceInstallCommand"
-            $output = (& cmd /c $aceInstallCommand)
-            Write-Log $output
+            cmd /c $aceInstallCommand
             if($LASTEXITCODE -eq 0)
             {
                 Write-Log "The installation succeeded, continuing ..."
@@ -756,8 +755,8 @@ function TestInstall-InterimFix {
 
     Begin{
         $aceExe = "mqsifixinst.cmd"
-        $aceInstallCommand = $aceExe + " `"" + $installDir + "`" testinstall " + $fixName
-        Write-Log "Begin install of $fixName ..."
+        $aceInstallCommand = ".\" + $aceExe + " `"" + $installDir + "`" testinstall " + $fixName
+        Write-Log "Begin test install of $fixName ..."
         Write-Log "(this may take some time) ..."
     }
 
@@ -767,34 +766,32 @@ function TestInstall-InterimFix {
             $aceFixDir = "$dir/$fixName"
             Set-Location $aceFixDir
             Write-Log "Going to run $aceInstallCommand"
-            $output = (& cmd /c $aceInstallCommand)
+            cmd /c $aceInstallCommand
             Write-Log $output
             if($LASTEXITCODE -eq 0)
             {
-                Write-Log "The installation succeeded, continuing ..."
+                Write-Log "The test installation succeeded, continuing ..."
             }
             else
             {
-                Write-Log "The installation failed, please check $logFile"
+                Write-Log "The test installation failed, please check $logFile"
                 exit 1;
             }
             Set-Location ../
-            Write-Log "Removing unzipped mod release"
-            Remove-Item -Path $aceFixDir -Recurse -Force
         }
 
         Catch
         {
-            Write-Log "An exception occured installing $fixName"
+            Write-Log "An exception occured test installing $fixName"
             Break
         }
     }
 
     End{
         If($?){
-            Write-Log "Installation of $fixName succesfull."
+            Write-Log "Test installation of $fixName succesfull."
         } else {
-            Write-Log "Installation of $fixName failed."
+            Write-Log "Test installation of $fixName failed."
             exit 1
         }
     }
