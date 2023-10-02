@@ -21,6 +21,7 @@
         7. Install custom user defined nodes
         8. Install libraries in the shared-classes
         9. Update the java.security file
+        10. ...
 
 .OUTPUTS
     Logging is written to the console
@@ -443,6 +444,82 @@ function Stop-Ace {
     }
 }
 
+function Extract-7Zip {
+    <#
+    .SYNOPSIS
+        Interface with 7-zip to unzip
+
+    .DESCRIPTION
+        Extract-7Zip is a function that extracts an archive to a target directory
+
+    .PARAMETER ArchivePath
+        The path to the archive file to extract
+
+    .PARAMETER DestinationPath
+        The path to extract the archive to
+
+     .PARAMETER 7ZipPath
+        Optional path to the 7zip executable, defaults to 'C:\Program Files\7-Zip\7z.exe'
+
+    .NOTES
+        Version:        1.0
+        Author:         Matthias Blomme
+        Creation Date:  2023-09-27
+        Purpose/Change: Initial script development
+
+    .EXAMPLE
+        Extract-7Zip -ArchivePath "C:\path\to\your\archive.zip" -DestinationPath "C:\path\to\extract\to"
+    #>
+
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory=$true, Position=0)]
+        [string]$ArchivePath,
+
+        [Parameter(Mandatory=$true, Position=1)]
+        [string]$DestinationPath,
+
+        [string]$7ZipPath = "C:\Program Files\7-Zip\7z.exe" # Default path to 7z.exe;
+    )
+
+    begin {
+        # Check if 7zip executable exists
+        if (-not (Test-Path $7ZipPath)) {
+            Write-Error "7zip executable not found at path: $7ZipPath"
+            return
+        }
+    }
+
+    process {
+        # Check if the archive file exists for the current pipeline item
+        if (-not (Test-Path $ArchivePath)) {
+            Write-Error "Archive file not found at path: $ArchivePath"
+            return
+        }
+
+        # Create the destination directory if it doesn't exist
+        if (-not (Test-Path $DestinationPath)) {
+            New-Item -Path $DestinationPath -ItemType Directory | Out-Null
+        }
+
+        # Call 7zip to extract the archive for the current pipeline item
+        $command = "`"$7ZipPath`" x `"$ArchivePath`" -o`"$DestinationPath`" -y"
+        write-host $command
+        cmd /c $command
+
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "7zip extraction failed with exit code: $LASTEXITCODE"
+        } else {
+            Write-Output "Extraction of $ArchivePath completed successfully."
+        }
+    }
+
+    end {
+        Write-Output "Extraction process completed."
+    }
+}
+
+
 function Unzip-ModRelease {
     <#
     .SYNOPSIS
@@ -457,6 +534,12 @@ function Unzip-ModRelease {
     .PARAMETER aceModDir
         The name of the directoy to unzip the mod release to
 
+    .PARAMETER use7Zip
+        Use 7zip or the default Expand archive from powershell
+
+    .PARAMETER path7Zip
+        The path to the 7zip installation location
+
     .NOTES
         Version:        1.0
         Author:         Matthias Blomme
@@ -465,10 +548,23 @@ function Unzip-ModRelease {
 
     .EXAMPLE
         Unzip-ModRelease -fixVersion 12.0.7.0 -aceModDir 12.0-ACE-WINX64-12.0.7.0
+        Unzip-ModRelease -fixVersion 12.0.7.0 -aceModDir 12.0-ACE-WINX64-12.0.7.0 -use7Zip $true
+        Unzip-ModRelease -fixVersion 12.0.7.0 -aceModDir 12.0-ACE-WINX64-12.0.7.0 -use7Zip $true -path7Zip "C:\Program Files\7-Zip\7z.exe"
     #>
+
+    [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$True)][String]$fixVersion,
-        [Parameter(Mandatory=$True)][String]$aceModDir
+        [Parameter(Mandatory=$True)]
+        [String]$fixVersion,
+
+        [Parameter(Mandatory=$True)]
+        [String]$aceModDir,
+
+        [Parameter(Mandatory=$False)]
+        [Bool]$use7Zip = $false,
+
+        [Parameter(Mandatory=$False)]
+        [String]$path7Zip = ""
     )
 
     Begin{
@@ -479,7 +575,15 @@ function Unzip-ModRelease {
 
     Process{
         Try{
-            Expand-Archive $aceZip -DestinationPath $aceModDir -Force
+            if ($use7Zip){
+                if ($path7Zip -eq "") {
+                    Extract-7Zip -ArchivePath $aceZip -DestinationPath $aceModDir
+                } else {
+                    Extract-7Zip -ArchivePath $aceZip -DestinationPath $aceModDir -7ZipPath $path7Zip
+                }
+            } else {
+                Expand-Archive $aceZip -DestinationPath $aceModDir -Force
+            }
         }
 
         Catch
@@ -509,6 +613,12 @@ function Unzip-InterimFix {
     .PARAMETER fixName
         The name of the interim fix to install
 
+     .PARAMETER use7Zip
+        Use 7zip or the default Expand archive from powershell
+
+     .PARAMETER path7Zip
+        The path to the 7zip installation location
+
     .NOTES
         Version:        1.0
         Author:         Matthias Blomme
@@ -517,9 +627,20 @@ function Unzip-InterimFix {
 
     .EXAMPLE
         Unzip-InterimFix -fixName 12.0.7.0-ACE-WinX64-LAIT42906
+        Unzip-InterimFix -fixName 12.0.7.0-ACE-WinX64-LAIT42906 -use7Zip $True
+        Unzip-InterimFix -fixName 12.0.7.0-ACE-WinX64-LAIT42906 -use7Zip $True -path7Zip "C:\Program Files\7-Zip\7z.exe"
     #>
+
+    [CmdletBinding()]
     param (
-        [Parameter(Mandatory=$True)][String]$fixName
+        [Parameter(Mandatory=$True)]
+        [String]$fixName,
+
+        [Parameter(Mandatory=$false)]
+        [Bool]$use7Zip = $false,
+
+        [Parameter(Mandatory=$False)]
+        [String]$path7Zip = ""
     )
 
     Begin{
@@ -530,7 +651,15 @@ function Unzip-InterimFix {
 
     Process{
         Try{
-            Expand-Archive $aceZip -DestinationPath $dir\$fixName -Force
+            if ($use7Zip){
+                if ($path7Zip -eq "") {
+                    Extract-7Zip -ArchivePath $aceZip -DestinationPath $dir\$fixName
+                } else {
+                    Extract-7Zip -ArchivePath $aceZip -DestinationPath $dir\$fixName -7ZipPath $path7Zip
+                }
+            } else {
+                Expand-Archive $aceZip -DestinationPath $dir\$fixName -Force
+            }
         }
 
         Catch
