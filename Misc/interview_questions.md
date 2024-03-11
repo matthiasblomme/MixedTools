@@ -167,6 +167,6 @@
     * ibm cloud
     * aws
     * ...
-
-
- 
+* What is the difference between AKS and EKS
+* How is managed openshift on Azure called?
+* How is managed openshift on AWS called?
